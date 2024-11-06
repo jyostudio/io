@@ -1,5 +1,5 @@
 import overload from "@jyostudio/overload";
-import Buffer from "../Buffer.js";
+import Buffer from "./buffer.js";
 import InternalString from "./internalString.js";
 
 const CONSTURCTOR_SYMBOL = Symbol("constructor");

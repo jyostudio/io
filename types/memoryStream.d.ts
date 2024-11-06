@@ -134,7 +134,7 @@ export default class MemoryStream extends Stream {
    * 关闭 MemoryStream 流。
    * @returns {void}
    */
-  Dispose(): void;
+  close(): void;
 
   /**
    * 清理当前编写器的所有缓冲区，使所有缓冲数据写入基础设备。

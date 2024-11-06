@@ -1,6 +1,11 @@
-export * as BinaryReader from './binaryReader.js';
-export * as BinaryWriter from './binaryWriter.js';
-export * as MemoryStream from './memoryStream.js';
-export * as Stream from './stream.js';
-export * as SeekOrigin from './seekOrigin.js';
-export * as FileRequest from './fileRequest.js';
+export { default as BinaryReader } from './binaryReader.js';
+export { default as BinaryWriter } from './binaryWriter.js';
+export { default as MemoryStream } from './memoryStream.js';
+export { default as Stream } from './stream.js';
+export { default as SeekOrigin } from './seekOrigin.js';
+export { default as FileHelper } from './fileHelper.js';
+export { default as TextReader } from './textReader.js';
+export { default as TextWriter } from './textWriter.js';
+export { default as StringReader } from './stringReader.js';
+export { default as StringWriter } from './stringWriter.js';
+export { default as Path } from './path.js';

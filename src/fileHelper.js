@@ -1,16 +1,16 @@
 import overload from "@jyostudio/overload";
 
-export default class FileRequest {
+export default class FileHelper {
     static #getRequestPath(path) {
         if (path.indexOf("://") >= 0) {
             return path;
         }
 
-        return FileRequest.resolveRelativePath(location.href, path);
+        return FileHelper.resolveAbsolutePath(location.href, path);
     }
 
-    static resolveRelativePath(...params) {
-        FileRequest.resolveRelativePath = overload([String, String], function (path, relative) {
+    static resolveAbsolutePath(...params) {
+        FileHelper.resolveAbsolutePath = overload([String, String], function (path, relative) {
             if (relative[0] === "/") return relative;
 
             let newPath = path;
@@ -36,22 +36,22 @@ export default class FileRequest {
             return newPath.concat(relativeArr).join("/");
         });
 
-        return FileRequest.resolveRelativePath.apply(this, params);
+        return FileHelper.resolveAbsolutePath.apply(this, params);
     }
 
     static async(...params) {
-        FileRequest.async = overload([String], async function (path) {
-            return new Uint8Array(await (await fetch(FileRequest.#getRequestPath(path))).arrayBuffer());
+        FileHelper.async = overload([String], async function (path) {
+            return new Uint8Array(await (await fetch(FileHelper.#getRequestPath(path))).arrayBuffer());
         });
 
-        return FileRequest.async.apply(this, params);
+        return FileHelper.async.apply(this, params);
     }
 
     static sync(...params) {
-        FileRequest.sync = overload([String], function (path) {
+        FileHelper.sync = overload([String], function (path) {
             let xhr = new XMLHttpRequest();
             xhr.overrideMimeType('text/plain; charset=x-user-defined');
-            xhr.open("GET", FileRequest.#getRequestPath(path), false);
+            xhr.open("GET", FileHelper.#getRequestPath(path), false);
             xhr.send();
             if (xhr.status == 0 || xhr.status == 200) {
                 let byte = [];
@@ -65,6 +65,6 @@ export default class FileRequest {
             throw new Error("Failed to load file: " + path);
         });
 
-        return FileRequest.sync.apply(this, params);
+        return FileHelper.sync.apply(this, params);
     }
 }
