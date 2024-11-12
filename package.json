@@ -7,12 +7,13 @@
   "unpkg": "dist/io.js",
   "jsdelivr": "dist/io.js",
   "type": "module",
-  "types": "types/io.d.ts",
-  "typings": "types/io.d.ts",
+  "types": "src/index.d.ts",
+  "typings": "src/index.d.ts",
   "scripts": {
     "publish": "npm publish --access public",
     "build": "esbuild src/index.js --bundle --minify --sourcemap --format=esm --outfile=dist/io.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll --coverage"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll --coverage",
+    "doc": "typedoc --options typedoc.json"
   },
   "repository": {
     "type": "git",
@@ -29,17 +30,13 @@
   "homepage": "https://github.com/jyostudio/io#readme",
   "devDependencies": {
     "esbuild": "^0.23.0",
-    "jest": "^29.7.0",
-    "jest-html-reporter": "^3.10.2"
+    "typedoc": "^0.26.11",
+    "typedoc-github-theme": "^0.1.2"
   },
   "peerDependencies": {
     "@jyostudio/enum": "^0.0.4",
     "@jyostudio/list": "^0.0.8",
     "@jyostudio/overload": "^0.0.12",
     "@jyostudio/text": "^0.0.3"
-  },
-  "jest": {
-    "transform": {},
-    "testResultsProcessor": "./node_modules/jest-html-reporter"
   }
 }

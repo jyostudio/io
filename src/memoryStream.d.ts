@@ -56,14 +56,12 @@ export default class MemoryStream extends Stream {
 
   /**
    * 使用初始化为零的可扩展容量初始化 MemoryStream 类的新实例。
-   * @constructor
    * @returns {MemoryStream} MemoryStream 类的新实例。
    */
   constructor();
 
   /**
    * 使用按指定要求初始化的可扩展容量初始化 MemoryStream 类的新实例。
-   * @constructor
    * @param {Number} capacity 内部数组的初始大小（以字节为单位）。
    * @returns {MemoryStream} MemoryStream 类的新实例。
    */
@@ -71,7 +69,6 @@ export default class MemoryStream extends Stream {
 
   /**
    * 基于指定的字节数组初始化 MemoryStream 类的无法调整大小的新实例。
-   * @constructor
    * @param {Uint8Array} buffer 从中创建当前流的无符号字节数组。
    * @returns {MemoryStream} MemoryStream 类的新实例。
    */
@@ -79,7 +76,6 @@ export default class MemoryStream extends Stream {
 
   /**
    * 在 MemoryStream.CanWrite 属性按指定设置的状态下，基于指定的字节数组初始化 MemoryStream 类的无法调整大小的新实例。
-   * @constructor
    * @param {MemoryStream} buffer 从中创建此流的无符号字节的数组。
    * @param {Boolean} writable MemoryStream.CanWrite 属性的设置，确定该流是否支持写入。
    * @returns {MemoryStream} MemoryStream 类的新实例。
@@ -88,7 +84,6 @@ export default class MemoryStream extends Stream {
 
   /**
    * 基于字节数组的指定区域（索引）初始化 MemoryStream 类的无法调整大小的新实例。
-   * @constructor
    * @param {Uint8Array} buffer 从中创建此流的无符号字节的数组。
    * @param {Number} index buffer 内的索引，流从此处开始。
    * @param {Number} count 流的长度（以字节为单位）。
@@ -98,7 +93,6 @@ export default class MemoryStream extends Stream {
 
   /**
    * 在 MemoryStream.CanWrite 属性按指定设置的状态下，基于字节数组的指定区域，初始化 MemoryStream 类的无法调整大小的新实例。
-   * @constructor
    * @param {Uint8Array} buffer 从中创建此流的无符号字节的数组。
    * @param {Number} index buffer 内的索引，流从此处开始。
    * @param {Number} count 流的长度（以字节为单位）。
@@ -114,7 +108,6 @@ export default class MemoryStream extends Stream {
 
   /**
    * 在 MemoryStream.CanWrite 属性和调用 MemoryStream.GetBuffer 的能力按指定设置的状态下，基于字节数组的指定区域初始化 MemoryStream 类的新实例。
-   * @constructor
    * @param {Uint8Array} buffer 从中创建此流的无符号字节的数组。
    * @param {Number} index buffer 内的索引，流从此处开始。
    * @param {Number} count 流的长度（以字节为单位）。

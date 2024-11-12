@@ -10,7 +10,6 @@ import SeekOrigin from "./seekOrigin";
 export default class BinaryWriter {
     /**
      * 指定无后备存储的 BinaryWriter。
-     * @static
      * @returns {BinaryWriter} 无后备存储的 BinaryWriter。
      */
     static get null(): BinaryWriter;
@@ -23,7 +22,6 @@ export default class BinaryWriter {
 
     /**
      * 基于所指定的流和特定的 UTF-8 编码，初始化 BinaryWriter 类的新实例。
-     * @constructor
      * @param {Stream} output 输出流。
      * @returns {BinaryWriter} BinaryWriter 类的新实例。
      */
@@ -31,7 +29,6 @@ export default class BinaryWriter {
 
     /**
      * 基于所指定的流和特定的字符编码，初始化 BinaryWriter 类的新实例。
-     * @constructor
      * @param {Stream} output 输出流。
      * @param {Encoding} encoding 要使用的字符编码。
      * @returns {BinaryWriter} BinaryWriter 类的新实例。

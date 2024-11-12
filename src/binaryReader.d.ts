@@ -14,7 +14,6 @@ export default class BinaryReader {
 
     /**
      * 基于所指定的流和特定的 UTF-8 编码，初始化 BinaryReader 类的新实例。
-     * @constructor
      * @param {Stream} input 输入流。
      * @returns {BinaryReader} BinaryReader 类的新实例。
      */
@@ -22,7 +21,6 @@ export default class BinaryReader {
 
     /**
      * 基于所指定的流和特定的字符编码，初始化 BinaryReader 类的新实例。
-     * @constructor
      * @param {Stream} input 输入流。
      * @param {Encoding} encoding 要使用的字符编码。
      * @returns {BinaryReader} BinaryReader 类的新实例。
@@ -31,7 +29,6 @@ export default class BinaryReader {
 
     /**
      * 基于所指定的流和特定的字符编码，初始化 BinaryReader 类的新实例。
-     * @constructor
      * @param {Stream} input 输入流。
      * @param {Encoding} encoding 要使用的字符编码。
      * @param {Boolean} bigEndian 是否使用大端字节序。

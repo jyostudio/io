@@ -7,7 +7,6 @@ import TextReader from "./textReader";
 export default class StringReader extends TextReader {
     /**
      * 新实例初始化 StringReader 读取指定的字符串中的类。
-     * @constructor
      * @param {String} s 字符串 StringReader 应进行初始化。
      * @returns {StringReader} StringReader 读取指定的字符串中的类。
      */

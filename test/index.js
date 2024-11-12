@@ -1,16 +1,10 @@
-import List from "@jyostudio/list";
-import BinaryReader from "../src/binaryReader.js";
-import BinaryWriter from "../src/binaryWriter.js";
-import MemoryStream from "../src/memoryStream.js";
-
 import * as IO from "../src/index.js";
 
 console.dir(IO);
 
-const ms = new MemoryStream();
-const bw = new BinaryWriter(ms);
-let a = new List(String, "Hello, World!".split(""))
-bw.writeChars(a);
-ms.position = 0;
-const br = new BinaryReader(ms);
-console.dir(br.readChars(13).join(""));
+const Path = IO.Path;
+
+console.dir(Path);
+
+let res = Path.combine("a", "b", "c");
+console.dir(res);

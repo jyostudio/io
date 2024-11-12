@@ -10,7 +10,6 @@ export default class TextReader {
 
     /**
      * 初始化 TextReader 类的新实例。
-     * @constructor
      * @returns {TextReader} TextReader 类的新实例。
      */
     constructor();

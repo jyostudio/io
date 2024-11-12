@@ -1,5 +1,3 @@
-# @jyostudio/io
-
 文件流操作。
 
 ## 引用
@@ -9,7 +7,7 @@
 ```HTML
 <script type="importmap">
   {
-    imports: {
+    "imports": {
       "@jyostudio/io": "https://unpkg.com/@jyostudio/io"
     }
   }
@@ -26,7 +24,7 @@ npm install @jyostudio/io
 
 ## 用法
 
-请根据智能提示指引使用。
+请参照 docs 文档目录。
 
 ## 许可证
 

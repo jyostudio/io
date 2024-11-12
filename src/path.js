@@ -75,7 +75,7 @@ export default class Path {
         if (!this.#invalidPathCharsWithAdditionalChecksReal) {
             let invalidChars = "\"<>|\0*?".split("");
             for (let i = 1; i <= 31; i++) {
-                invalidChars.push(i.toString());
+                invalidChars.push(String.fromCharCode(i));
             }
             this.#invalidPathCharsWithAdditionalChecksReal = new Proxy(invalidChars, {
                 get(obj, prop) {
@@ -94,10 +94,14 @@ export default class Path {
         if (!this.#invalidPathCharsReal) {
             let invalidChars = "\"<>|\0".split("");
             for (let i = 1; i <= 31; i++) {
-                invalidChars.push(i.toString());
+                invalidChars.push(String.fromCharCode(i));
             }
             this.#invalidPathCharsReal = new Proxy(invalidChars, {
                 get(obj, prop) {
+                    if (typeof obj[prop] === "function") {
+                        return obj[prop].bind(obj);
+                    }
+
                     return obj[prop];
                 },
                 set() {
@@ -113,10 +117,14 @@ export default class Path {
         if (!this.#invalidFileNameCharsReal) {
             let invalidChars = "\"<>|\0:*?\\/".split("");
             for (let i = 1; i <= 31; i++) {
-                invalidChars.push(i.toString());
+                invalidChars.push(String.fromCharCode(i));
             }
             this.#invalidFileNameCharsReal = new Proxy(invalidChars, {
                 get(obj, prop) {
+                    if (typeof obj[prop] === "function") {
+                        return obj[prop].bind(obj);
+                    }
+
                     return obj[prop];
                 },
                 set() {
@@ -163,7 +171,10 @@ export default class Path {
                 return Path.#andPathHasIllegalCharacters.call(this, path, false);
             })
             .add([String, Boolean], function (path, checkAdditional) {
-                return path.indexOf(Path.invalidPathChars) >= 0 || (checkAdditional && Path.#anyPathHasWildCardCharacters(path));
+                for (let i = 0; i < path.length; i++) {
+                    if (Path.invalidPathChars.indexOf(path[i]) >= 0) return true;
+                }
+                return checkAdditional && Path.#anyPathHasWildCardCharacters(path);
             });
 
         return Path.#andPathHasIllegalCharacters.apply(this, params);
@@ -481,7 +492,7 @@ export default class Path {
                 return s;
             }
 
-            return "";
+            return null;
         });
 
         return Path.changeExtension.apply(this, params);
