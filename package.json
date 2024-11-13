@@ -1,0 +1,41 @@
+{
+  "name": "@jyostudio/io",
+  "version": "0.0.1",
+  "description": "io",
+  "source": "src/index.js",
+  "main": "src/index.js",
+  "unpkg": "dist/io.js",
+  "jsdelivr": "dist/io.js",
+  "type": "module",
+  "types": "src/index.d.ts",
+  "typings": "src/index.d.ts",
+  "scripts": {
+    "publish": "npm publish --access public",
+    "build": "esbuild src/index.js --bundle --minify --sourcemap --format=esm --outfile=dist/io.js",
+    "doc": "typedoc --options typedoc.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jyostudio/io.git"
+  },
+  "keywords": [
+    "io"
+  ],
+  "author": "nivk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jyostudio/io/issues"
+  },
+  "homepage": "https://github.com/jyostudio/io#readme",
+  "devDependencies": {
+    "esbuild": "^0.23.0",
+    "typedoc": "^0.26.11",
+    "typedoc-github-theme": "^0.1.2"
+  },
+  "peerDependencies": {
+    "@jyostudio/enum": "^0.0.4",
+    "@jyostudio/list": "^0.0.8",
+    "@jyostudio/overload": "^0.0.12",
+    "@jyostudio/text": "^0.0.3"
+  }
+}
