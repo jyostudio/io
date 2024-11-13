@@ -49,3 +49,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## 注意！
+
+本项目代码部分摘取自[微软 Reference Source](https://referencesource.microsoft.com/) 以及 [Mono](https://github.com/mono/mono)  
+所以，在完全替换所有摘取代码之前，请不要用于商业目的。  
+另：MIT 许可证仅适用于非上述仓库代码中的其他部分，上述代码中的部分沿用原有许可证。  
+如果你喜欢本库，那你也一定很喜欢[Visual Studio 和 C#](https://visualstudio.com) ^_^
