@@ -1,6 +1,6 @@
 {
   "name": "@jyostudio/io",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "io",
   "source": "src/index.js",
   "main": "src/index.js",
@@ -28,14 +28,15 @@
   },
   "homepage": "https://github.com/jyostudio/io#readme",
   "devDependencies": {
-    "esbuild": "^0.23.0",
+    "esbuild": "^0.23.1",
     "typedoc": "^0.26.11",
-    "typedoc-github-theme": "^0.1.2"
+    "typedoc-github-theme": "^0.1.2",
+    "typedoc-plugin-missing-exports": "^3.0.2"
   },
-  "peerDependencies": {
-    "@jyostudio/enum": "^0.0.4",
-    "@jyostudio/list": "^0.0.8",
-    "@jyostudio/overload": "^0.0.12",
-    "@jyostudio/text": "^0.0.3"
+  "dependencies": {
+    "@jyostudio/enum": "^0.1.0",
+    "@jyostudio/list": "^0.1.0",
+    "@jyostudio/overload": "^0.1.1",
+    "@jyostudio/text": "^0.1.1"
   }
 }
