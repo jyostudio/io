@@ -106,7 +106,7 @@ export default class MemoryStream extends Stream {
         return MemoryStream[CONSTURCTOR_SYMBOL].apply(this, params);
     }
 
-    constructor(params) {
+    constructor(...params) {
         super();
 
         Object.defineProperties(this, {
