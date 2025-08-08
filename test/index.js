@@ -1,10 +1,4 @@
-import * as IO from "../src/index.js";
+import * as IO from "../dist/io.js";
 
-console.dir(IO);
-
-const Path = IO.Path;
-
-console.dir(Path);
-
-let res = Path.combine("a", "b", "c");
-console.dir(res);
+const m = new IO.MemoryStream();
+m.capacity = "abc";
