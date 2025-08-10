@@ -17,7 +17,7 @@ export default {
         // 指定打包文件的目录
         path: path.resolve(__dirname, "dist"),
         // 打包后文件的文件名
-        filename: "io.js",
+        filename: "index.js",
         // 告诉webpack不适用箭头
         environment: {
             arrowFunction: false
@@ -61,7 +61,7 @@ export default {
                                         // 指定corejs版本
                                         "corejs": "3",
                                         // 使用corejs的方式
-                                        "useBuiltIns": "entry"
+                                        "useBuiltIns": "usage"
                                     }
                                 ]
                             ]
@@ -76,7 +76,7 @@ export default {
     },
     // 配置webpack插件
     plugins: [
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin()
     ],
     // 用来设置那些后缀名可以设置引用模块
     resolve: {

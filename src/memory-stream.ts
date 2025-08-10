@@ -1,11 +1,14 @@
 import overload from "@jyostudio/overload";
+import { checkSetterType } from "@jyostudio/overload/dist/decorator.js";
+import _Buffer from "./_buffer";
 import SeekOrigin from "./seek-origin";
 import Stream from "./stream";
-import _Buffer from "./_buffer";
-import { checkSetterType } from "./_decorator";
 
 const CONSTRUCTOR_SYMBOL = Symbol("constructor");
 
+/**
+ * 创建一个流，其后备存储为内存。
+ */
 export default class MemoryStream extends Stream {
     /**
      * 表示内存流的最大长度（以字节为单位）。
@@ -83,7 +86,7 @@ export default class MemoryStream extends Stream {
      * @returns 如果流支持写入，则为 true；否则为 false。
      */
     public get canWrite() {
-        return this.#writable;
+        return this.#isOpen && this.#writable;
     }
 
     /**
@@ -115,6 +118,14 @@ export default class MemoryStream extends Stream {
         this.#checkOpen();
 
         value = value | 0;
+
+        if (value < 0) {
+            throw new RangeError("容量不能小于 0。");
+        }
+
+        if (value > MemoryStream.#MAX_BYTE_ARRAY_LENGTH) {
+            throw new RangeError("容量超出允许范围。");
+        }
 
         let expandable = this.#expandable;
         if (!expandable && value !== this.capacity) {
@@ -157,7 +168,7 @@ export default class MemoryStream extends Stream {
         value = value | 0;
 
         if (value < 0) {
-            throw new RangeError("位置不能小于零。");
+            throw new RangeError("位置不能小于 0。");
         }
 
         if (value > MemoryStream.#MEM_STREAM_MAX_LENGTH) {
@@ -170,26 +181,26 @@ export default class MemoryStream extends Stream {
     /**
      * 使用初始化为零的可扩展容量初始化 MemoryStream 类的新实例。
      */
-    constructor();
+    public constructor();
 
     /**
      * 使用按指定要求初始化的可扩展容量初始化 MemoryStream 类的新实例。
      * @param capacity 内部数组的初始大小（以字节为单位）。
      */
-    constructor(capacity: number);
+    public constructor(capacity: number);
 
     /**
      * 基于指定的字节数组初始化 MemoryStream 类的无法调整大小的新实例。
      * @param buffer 从中创建当前流的无符号字节数组。
      */
-    constructor(buffer: Uint8Array);
+    public constructor(buffer: Uint8Array);
 
     /**
      * 在 MemoryStream.CanWrite 属性按指定设置的状态下，基于指定的字节数组初始化 MemoryStream 类的无法调整大小的新实例。
      * @param buffer 从中创建此流的无符号字节的数组。
      * @param writable MemoryStream.CanWrite 属性的设置，确定该流是否支持写入。
      */
-    constructor(buffer: Uint8Array, writable: boolean);
+    public constructor(buffer: Uint8Array, writable: boolean);
 
     /**
      * 基于字节数组的指定区域（索引）初始化 MemoryStream 类的无法调整大小的新实例。
@@ -197,7 +208,7 @@ export default class MemoryStream extends Stream {
      * @param index buffer 内的索引，流从此处开始。
      * @param count 流的长度（以字节为单位）。
      */
-    constructor(buffer: Uint8Array, index: number, count: number);
+    public constructor(buffer: Uint8Array, index: number, count: number);
 
     /**
      * 在 MemoryStream.CanWrite 属性按指定设置的状态下，基于字节数组的指定区域，初始化 MemoryStream 类的无法调整大小的新实例。
@@ -206,7 +217,7 @@ export default class MemoryStream extends Stream {
      * @param count 流的长度（以字节为单位）。
      * @param writable MemoryStream.CanWrite 属性的设置，确定该流是否支持写入。
      */
-    constructor(
+    public constructor(
         buffer: Uint8Array,
         index: number,
         count: number,
@@ -221,7 +232,7 @@ export default class MemoryStream extends Stream {
      * @param writable MemoryStream.CanWrite 属性的设置，确定该流是否支持写入。
      * @param publiclyVisible 设置为 true 可以启用 MemoryStream.GetBuffer，它返回无符号字节数组，流从该数组创建；否则为 false。
      */
-    constructor(
+    public constructor(
         buffer: Uint8Array,
         index: number,
         count: number,
@@ -229,7 +240,7 @@ export default class MemoryStream extends Stream {
         publiclyVisible: boolean
     );
 
-    constructor(...params: any) {
+    public constructor(...params: any) {
         super();
 
         return MemoryStream[CONSTRUCTOR_SYMBOL].apply(this, params);
@@ -242,7 +253,7 @@ export default class MemoryStream extends Stream {
             })
             .add([Number], function (this: MemoryStream, capacity: number) {
                 if (capacity < 0) {
-                    throw new Error("容量不能小于零。");
+                    throw new Error("容量不能小于 0。");
                 }
 
                 this.#buffer = new Uint8Array(capacity);
@@ -261,6 +272,7 @@ export default class MemoryStream extends Stream {
                 this.#length = this.#capacity = buffer.length;
                 this.#writable = writable;
                 this.#exposable = false;
+                this.#expandable = false;
                 this.#origin = 0;
                 this.#isOpen = true;
             })
@@ -272,15 +284,15 @@ export default class MemoryStream extends Stream {
             })
             .add([Uint8Array, Number, Number, Boolean, Boolean], function (this: MemoryStream, buffer: Uint8Array, index: number, count: number, writable: boolean, publiclyVisible: boolean) {
                 if (index < 0) {
-                    throw new RangeError(`"index"不能小于零。`);
+                    throw new RangeError("“index”不能小于 0。");
                 }
 
                 if (count < 0) {
-                    throw new RangeError(`"count"不能小于零。`);
+                    throw new RangeError("“count”不能小于 0。");
                 }
 
                 if (buffer.length - index < count) {
-                    throw new RangeError("索引和计数的总和大于缓冲区长度。");
+                    throw new RangeError("“index”和“count”的总和大于缓冲区长度。");
                 }
 
                 this.#buffer = buffer;
@@ -317,7 +329,7 @@ export default class MemoryStream extends Stream {
         value = value | 0;
 
         if (value < 0) {
-            throw new RangeError(`"value"不能小于零。`);
+            throw new RangeError("“value”不能小于 0。");
         }
 
         const capacity = this.#capacity;
@@ -338,24 +350,30 @@ export default class MemoryStream extends Stream {
     }
 
     /**
+     * 释放与当前 MemoryStream 对象关联的所有资源。
+     */
+    public override[Symbol.dispose]() {
+        this.#buffer = null;
+        this.#capacity = 0;
+        this.#exposable = false;
+        this.#length = 0;
+        this.#origin = 0;
+        this.#position = 0;
+        this.#isOpen = false;
+        this.#writable = false;
+        this.#expandable = false;
+
+        super[Symbol.dispose]();
+    }
+
+    /**
      * 关闭 MemoryStream 流。
      */
     public override close(): void;
 
     public override close(...params: any): any {
-        const superClose = super.close;
         MemoryStream.prototype.close = overload([], function (this: MemoryStream): void {
-            this.#buffer = null;
-            this.#capacity = 0;
-            this.#exposable = false;
-            this.#length = 0;
-            this.#origin = 0;
-            this.#position = 0;
-            this.#isOpen = false;
-            this.#writable = false;
-            this.#expandable = false;
-
-            superClose.apply(this, params);
+            this[Symbol.dispose]();
         });
 
         return MemoryStream.prototype.close.apply(this, params);
@@ -408,15 +426,15 @@ export default class MemoryStream extends Stream {
             this.#checkOpen();
 
             if (offset < 0) {
-                throw new RangeError(`"offset"不能小于零。`);
+                throw new RangeError("“offset”不能小于 0。");
             }
 
             if (count < 0) {
-                throw new RangeError(`"count"不能小于零。`);
+                throw new RangeError("“count”不能小于 0。");
             }
 
             if (buffer.length - offset < count) {
-                throw new RangeError("offset 和 count 的总和大于缓冲区长度。");
+                throw new RangeError("“offset”和“count”的总和大于缓冲区长度。");
             }
 
             let n = this.#length - this.#position;
@@ -477,7 +495,7 @@ export default class MemoryStream extends Stream {
             this.#checkOpen();
 
             if (offset > MemoryStream.#MEM_STREAM_MAX_LENGTH) {
-                throw new RangeError(`"offset"必须小于 2^31 - 1。`);
+                throw new RangeError("“offset”必须小于 2^31 - 1。");
             }
 
             const origin = this.#origin;
@@ -528,7 +546,7 @@ export default class MemoryStream extends Stream {
             this.#checkOpen();
 
             if (value < 0 || value > MemoryStream.#MEM_STREAM_MAX_LENGTH || value > (Number.MAX_SAFE_INTEGER - this.#origin)) {
-                throw new RangeError(`"value" 必须是非负数，并且小于 2^31 - 1 - origin。`);
+                throw new RangeError("“value”必须是非负数，并且小于 2^31 - 1 - origin。");
             }
 
             const newLength = this.#origin + value;
@@ -578,16 +596,20 @@ export default class MemoryStream extends Stream {
         MemoryStream.prototype.write = overload([Uint8Array, Number, Number], function (this: MemoryStream, buffer: Uint8Array, offset: number, count: number): void {
             this.#checkOpen();
 
+            if (!this.#writable) {
+                throw new Error("当前流不支持写入操作。");
+            }
+
             if (offset < 0) {
-                throw new RangeError(`"offset"不能小于零。`);
+                throw new RangeError("“offset”不能小于 0。");
             }
 
             if (count < 0) {
-                throw new RangeError(`"count"不能小于零。`);
+                throw new RangeError("“count”不能小于 0。");
             }
 
             if (buffer.length - offset < count) {
-                throw new RangeError("offset 和 count 的总和大于缓冲区长度。");
+                throw new RangeError("“offset”和“count”的总和大于缓冲区长度。");
             }
 
             const i = this.#position + count;
@@ -640,10 +662,14 @@ export default class MemoryStream extends Stream {
         MemoryStream.prototype.writeByte = overload([Number], function (this: MemoryStream, value: number): void {
             this.#checkOpen();
 
+            if (!this.#writable) {
+                throw new Error("当前流不支持写入操作。");
+            }
+
             value = value | 0;
 
             if (value < 0 || value > 255) {
-                throw new RangeError(`"value"必须是非负的并且小于256。`);
+                throw new RangeError("“value”必须是非负的并且小于 256。");
             }
 
             const position = this.#position;

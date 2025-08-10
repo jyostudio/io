@@ -13,12 +13,16 @@
         "outDir": "./dist",
         // 模块解析策略，"node"代表使用Node.js的模块解析策略
         "moduleResolution": "node",
+        // 生成对应的.d.ts文件
+        "declaration": true,
+        "declarationDir": "dist",
+        "declarationMap": true,
         // 是否对js文件进行编译，默认是false
         "allowJs": true,
         // 检查js代码是否符合逻辑规范，默认是false
         "checkJs": true,
         //是否移除注释
-        "removeComments": true,
+        "removeComments": false,
         // 不生成编译后的文件,只是执行过程，只是检查语法
         "noEmit": false,
         //当有错误的时候不生成编译后的文件

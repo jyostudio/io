@@ -1,6 +1,6 @@
 import overload from "@jyostudio/overload";
+import { checkSetterType } from "@jyostudio/overload/dist/decorator.js";
 import SeekOrigin from "./seek-origin";
-import { checkSetterType } from "./_decorator";
 
 /**
  * 提供字节序列的一般视图。 这是一个抽象类。
@@ -68,6 +68,50 @@ export default abstract class Stream {
     public abstract set position(value: number);
 
     /**
+     * 获取一个值（以毫秒为单位），该值确定流在超时前尝试读取多长时间。
+     * @returns 一个确定流在超时前尝试读取多长时间的值（以毫秒为单位）。
+     * @throws {EvalError} 如果当前流不支持读取超时。
+     */
+    public get readTimeout(): number {
+        throw new EvalError("当前流不支持读取超时。");
+    }
+
+    /**
+     * 设置一个值（以毫秒为单位），该值确定流在超时前尝试读取多长时间。
+     * @param value 一个确定流在超时前尝试读取多长时间的值（以毫秒为单位）。
+     * @throws {EvalError} 如果当前流不支持读取超时。
+     * @throws {RangeError} 如果 value 小于 0。
+     */
+    public set readTimeout(value: number) {
+        if (value < 0) {
+            throw new RangeError("“value”不能小于 0。");
+        }
+        throw new EvalError("当前流不支持读取超时。");
+    }
+
+    /**
+     * 获取一个值（以毫秒为单位），该值确定流在超时前尝试写入多长时间。
+     * @returns 如果流支持写入超时，则为超时时间（以毫秒为单位）；否则为 0。
+     * @throws {EvalError} 如果当前流不支持写入超时。
+     */
+    public get writeTimeout(): number {
+        throw new EvalError("当前流不支持写入超时。");
+    }
+
+    /**
+     * 设置一个值（以毫秒为单位），该值确定流在超时前尝试写入多长时间。
+     * @param value 一个确定流在超时前尝试写入多长时间的值（以毫秒为单位）。
+     * @throws {EvalError} 如果当前流不支持写入超时。
+     * @throws {RangeError} 如果 value 小于 0。
+     */
+    public set writeTimeout(value: number) {
+        if (value < 0) {
+            throw new RangeError("“value”不能小于 0。");
+        }
+        throw new EvalError("当前流不支持写入超时。");
+    }
+
+    /**
      * 初始化 Stream 类的新实例。
      * @returns Stream 类的新实例。
      * @throws {EvalError} 如果尝试直接实例化 Stream 类。
@@ -76,9 +120,81 @@ export default abstract class Stream {
 
     protected constructor(...params: any) {
         if (new.target === Stream) {
-            throw new EvalError("无法创建抽象类“System.IO.Stream”的实例");
+            throw new EvalError("无法创建抽象类“Stream”的实例。");
         }
         overload([], () => { })(...params);
+    }
+
+    /**
+     * 异步读取当前流中的字节。
+     * @param buffer 要读取的字节将存储在此缓冲区中。
+     * @param offset 缓冲区中的从零开始的字节偏移量，从此处开始存储从当前流中读取的数据。
+     * @param count 要从当前流中最多读取的字节数。
+     * @returns 返回一个 Promise，该 Promise 在读取完成时解析为读取的字节数，或者在发生错误时解析为错误对象。
+     */
+    public asyncRead(buffer: Uint8Array, offset: number, count: number): Promise<any>;
+
+    public asyncRead(...params: any): any {
+        Stream.prototype.asyncRead = overload([Uint8Array, Number, Number], function (this: Stream, buffer: Uint8Array, offset: number, count: number): Promise<any> {
+            return new Promise((resolve) => {
+                if (!this.canRead) {
+                    resolve(new EvalError("当前流不支持读取。"));
+                    return;
+                }
+
+                if (offset < 0 || count < 0 || offset + count > buffer.length) {
+                    resolve(new RangeError("“offset”和“count”超出范围。"));
+                    return;
+                }
+
+                try {
+                    const bytesRead = this.read(buffer, offset, count);
+                    if (bytesRead < 0) {
+                        resolve(new RangeError("流已到达结尾。"));
+                        return;
+                    }
+                    resolve(buffer.slice(offset, offset + bytesRead));
+                } catch (error) {
+                    resolve(error);
+                }
+            });
+        });
+
+        return Stream.prototype.asyncRead.apply(this, params);
+    }
+
+    /**
+     * 异步将字节写入当前流。
+     * @param buffer 要写入的字节。
+     * @param offset 缓冲区中的从零开始的字节偏移量，从此处开始将字节写入当前流。
+     * @param count 要写入当前流的字节数。
+     * @returns 返回一个 Promise，该 Promise 在写入完成时解析为写入的字节数，或者在发生错误时解析为错误对象。
+     */
+    public asyncWrite(buffer: Uint8Array, offset: number, count: number): Promise<any>;
+
+    public asyncWrite(...params: any): any {
+        Stream.prototype.asyncWrite = overload([Uint8Array, Number, Number], function (this: Stream, buffer: Uint8Array, offset: number, count: number): Promise<any> {
+            return new Promise((resolve) => {
+                if (!this.canWrite) {
+                    resolve(new EvalError("当前流不支持写入。"));
+                    return;
+                }
+
+                if (offset < 0 || count < 0 || offset + count > buffer.length) {
+                    resolve(new RangeError("“offset”和“count”超出范围。"));
+                    return;
+                }
+
+                try {
+                    this.write(buffer, offset, count);
+                    resolve(count);
+                } catch (error) {
+                    resolve(error);
+                }
+            });
+        });
+
+        return Stream.prototype.asyncWrite.apply(this, params);
     }
 
     /**
@@ -104,23 +220,23 @@ export default abstract class Stream {
             })
             .add([Stream, Number], function (this: Stream, destination: Stream, bufferSize: number): void {
                 if (bufferSize <= 0) {
-                    throw new RangeError("缓冲区大小必须大于 0");
+                    throw new RangeError("缓冲区大小必须大于 0。");
                 }
 
                 if (!this.canRead && !this.canWrite) {
-                    throw new Error("流已关闭，无法进行读取或写入操作");
+                    throw new Error("流已关闭，无法进行读取或写入操作。");
                 }
 
                 if (!destination.canRead && !destination.canWrite) {
-                    throw new Error("目标流已关闭，无法进行读取或写入操作");
+                    throw new Error("目标流已关闭，无法进行读取或写入操作。");
                 }
 
                 if (!this.canRead) {
-                    throw new Error("当前流不支持读取操作");
+                    throw new Error("当前流不支持读取操作。");
                 }
 
                 if (!destination.canWrite) {
-                    throw new Error("目标流不支持写入操作");
+                    throw new Error("目标流不支持写入操作。");
                 }
 
                 const buffer = new Uint8Array(bufferSize);
@@ -136,12 +252,39 @@ export default abstract class Stream {
     }
 
     /**
+     * 释放此流使用的所有资源。
+     */
+    public [Symbol.dispose]() {
+        for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(this))) {
+            try {
+                if (key === "constructor") continue;
+                if (typeof (this as any)[key] === "function") {
+                    (this as any)[key] = () => {
+                        throw new EvalError("无法调用已释放的流方法。");
+                    };
+                } else if (key !== "constructor") {
+                    Object.defineProperty(this, key, {
+                        get: () => {
+                            throw new EvalError("无法访问已释放的流属性。");
+                        },
+                        set: () => {
+                            throw new EvalError("无法设置已释放的流属性。");
+                        }
+                    });
+                }
+            } catch { }
+        }
+    }
+
+    /**
      * 关闭当前流并释放与之关联的所有资源（如套接字和文件句柄）。
      */
     public close(): void;
 
     public close(...params: any): any {
-        Stream.prototype.close = overload([], function (): void { });
+        Stream.prototype.close = overload([], function (this: Stream): void {
+            this[Symbol.dispose]();
+        });
         return Stream.prototype.close.apply(this, params);
     }
 
@@ -181,6 +324,10 @@ export default abstract class Stream {
 
     public readByte(...params: any): any {
         Stream.prototype.readByte = overload([], function (this: Stream): number {
+            if (!this.canRead) {
+                throw new EvalError("当前流不支持读取。");
+            }
+
             const oneByteArray = new Uint8Array(1);
             const r = this.read(oneByteArray, 0, 1);
             if (r === 0) {
@@ -209,8 +356,12 @@ export default abstract class Stream {
 
     public writeByte(...params: any): any {
         Stream.prototype.writeByte = overload([Number], function (this: Stream, value: number): void {
+            if (!this.canWrite) {
+                throw new EvalError("当前流不支持写入。");
+            }
+
             if (value < 0 || value > 255) {
-                throw new RangeError("value 必须介于 0 到 255 之间的整数");
+                throw new RangeError("“value”必须是介于 0 到 255 之间的整数。");
             }
 
             const oneByteArray = new Uint8Array(1);
