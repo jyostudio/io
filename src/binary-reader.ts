@@ -151,11 +151,11 @@ export default class BinaryReader {
      */
     public [Symbol.dispose]() {
         this.#stream?.close();
-        this.#stream = null as unknown as Stream;
-        this.#encoding = null as unknown as Encoding;
-        this.#buffer = null as unknown as Uint8Array;
-        this.#view = null as unknown as DataView;
-        this.#charBytes = null as unknown as Uint8Array;
+        this.#stream = null;
+        this.#encoding = null;
+        this.#buffer = null;
+        this.#view = null;
+        this.#charBytes = null;
 
         for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(this))) {
             try {
