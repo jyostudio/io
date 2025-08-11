@@ -1,7 +1,6 @@
 import overload from "@jyostudio/overload";
 import List from "@jyostudio/list";
 import { StringBuilder } from "@jyostudio/text";
-import FileHelper from "./fileHelper.js";
 
 export default class Path {
     static get #extendedPathPrefix() {
@@ -752,7 +751,7 @@ export default class Path {
 
     static getTempPath(...params) {
         Path.getTempPath = overload([], function () {
-            return FileHelper.resolveAbsolutePath(globalThis?.location?.href || "", "./temp");
+            return new URL("./temp", globalThis?.location?.href || "").toString();
         });
 
         return Path.getTempPath.apply(this, params);
