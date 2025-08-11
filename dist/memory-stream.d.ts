@@ -1,6 +1,9 @@
 import SeekOrigin from "./seek-origin";
 import Stream from "./stream";
 declare const CONSTRUCTOR_SYMBOL: unique symbol;
+/**
+ * 创建一个流，其后备存储为内存。
+ */
 export default class MemoryStream extends Stream {
     #private;
     /**
@@ -88,6 +91,10 @@ export default class MemoryStream extends Stream {
      */
     constructor(buffer: Uint8Array, index: number, count: number, writable: boolean, publiclyVisible: boolean);
     private static [CONSTRUCTOR_SYMBOL];
+    /**
+     * 释放与当前 MemoryStream 对象关联的所有资源。
+     */
+    [Symbol.dispose](): void;
     /**
      * 关闭 MemoryStream 流。
      */

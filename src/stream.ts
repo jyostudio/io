@@ -1,6 +1,7 @@
 import overload from "@jyostudio/overload";
 import { checkSetterType } from "@jyostudio/overload/dist/decorator.js";
 import SeekOrigin from "./seek-origin";
+import { setDisposeStatus } from "./_utils";
 
 /**
  * 提供字节序列的一般视图。 这是一个抽象类。
@@ -255,25 +256,7 @@ export default abstract class Stream {
      * 释放此流使用的所有资源。
      */
     public [Symbol.dispose]() {
-        for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(this))) {
-            try {
-                if (key === "constructor") continue;
-                if (typeof (this as any)[key] === "function") {
-                    (this as any)[key] = () => {
-                        throw new EvalError("无法调用已释放的流方法。");
-                    };
-                } else if (key !== "constructor") {
-                    Object.defineProperty(this, key, {
-                        get: () => {
-                            throw new EvalError("无法访问已释放的流属性。");
-                        },
-                        set: () => {
-                            throw new EvalError("无法设置已释放的流属性。");
-                        }
-                    });
-                }
-            } catch { }
-        }
+        setDisposeStatus(this);
     }
 
     /**

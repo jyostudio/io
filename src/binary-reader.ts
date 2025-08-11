@@ -4,6 +4,7 @@ import { Encoding, UTF8Encoding } from "@jyostudio/text";
 import _Buffer from "./_buffer";
 import SeekOrigin from "./seek-origin";
 import Stream from "./stream";
+import { setDisposeStatus } from "./_utils";
 
 const CONSTRUCTOR_SYMBOL = Symbol("constructor");
 
@@ -157,25 +158,7 @@ export default class BinaryReader {
         this.#view = null;
         this.#charBytes = null;
 
-        for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(this))) {
-            try {
-                if (key === "constructor") continue;
-                if (typeof (this as any)[key] === "function") {
-                    (this as any)[key] = () => {
-                        throw new EvalError("BinaryReader 实例已被释放，无法调用方法。");
-                    };
-                } else if (key !== "constructor") {
-                    Object.defineProperty(this, key, {
-                        get: () => {
-                            throw new EvalError("BinaryReader 实例已被释放，无法访问属性。");
-                        },
-                        set: () => {
-                            throw new EvalError("BinaryReader 实例已被释放，无法设置属性。");
-                        }
-                    });
-                }
-            } catch { }
-        }
+        setDisposeStatus(this);
     }
 
     /**

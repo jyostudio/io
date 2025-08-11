@@ -1,4 +1,5 @@
 import overload from "@jyostudio/overload";
+import { setDisposeStatus } from "./_utils";
 
 const CONSTRUCTOR_SYMBOL = Symbol("constructor");
 
@@ -54,25 +55,7 @@ export default abstract class TextReader {
      * 释放此读取器使用的所有资源。
      */
     public [Symbol.dispose](): void {
-        for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(this))) {
-            try {
-                if (key === "constructor") continue;
-                if (typeof (this as any)[key] === "function") {
-                    (this as any)[key] = () => {
-                        throw new Error("TextReader 实例已被释放，无法调用方法。");
-                    };
-                } else if (key !== "constructor") {
-                    Object.defineProperty(this, key, {
-                        get: () => {
-                            throw new Error("TextReader 实例已被释放，无法访问属性。");
-                        },
-                        set: () => {
-                            throw new Error("TextReader 实例已被释放，无法设置属性。");
-                        }
-                    });
-                }
-            } catch { }
-        }
+        setDisposeStatus(this);
     }
 
     /**
@@ -257,7 +240,7 @@ class NullTextReader extends TextReader {
                 return -1;
             })
             .add([Array, Number, Number], function (this: NullTextReader, buffer: string[], index: number, count: number): number {
-                return -1;
+                return 0;
             });
 
         return NullTextReader.prototype.read.apply(this, params);

@@ -44,11 +44,53 @@ export default abstract class Stream {
      */
     abstract set position(value: number);
     /**
+     * 获取一个值（以毫秒为单位），该值确定流在超时前尝试读取多长时间。
+     * @returns 一个确定流在超时前尝试读取多长时间的值（以毫秒为单位）。
+     * @throws {EvalError} 如果当前流不支持读取超时。
+     */
+    get readTimeout(): number;
+    /**
+     * 设置一个值（以毫秒为单位），该值确定流在超时前尝试读取多长时间。
+     * @param value 一个确定流在超时前尝试读取多长时间的值（以毫秒为单位）。
+     * @throws {EvalError} 如果当前流不支持读取超时。
+     * @throws {RangeError} 如果 value 小于 0。
+     */
+    set readTimeout(value: number);
+    /**
+     * 获取一个值（以毫秒为单位），该值确定流在超时前尝试写入多长时间。
+     * @returns 如果流支持写入超时，则为超时时间（以毫秒为单位）；否则为 0。
+     * @throws {EvalError} 如果当前流不支持写入超时。
+     */
+    get writeTimeout(): number;
+    /**
+     * 设置一个值（以毫秒为单位），该值确定流在超时前尝试写入多长时间。
+     * @param value 一个确定流在超时前尝试写入多长时间的值（以毫秒为单位）。
+     * @throws {EvalError} 如果当前流不支持写入超时。
+     * @throws {RangeError} 如果 value 小于 0。
+     */
+    set writeTimeout(value: number);
+    /**
      * 初始化 Stream 类的新实例。
      * @returns Stream 类的新实例。
      * @throws {EvalError} 如果尝试直接实例化 Stream 类。
      */
     protected constructor();
+    /**
+     * 异步读取当前流中的字节。
+     * @param buffer 要读取的字节将存储在此缓冲区中。
+     * @param offset 缓冲区中的从零开始的字节偏移量，从此处开始存储从当前流中读取的数据。
+     * @param count 要从当前流中最多读取的字节数。
+     * @returns 返回一个 Promise，该 Promise 在读取完成时解析为读取的字节数，或者在发生错误时解析为错误对象。
+     */
+    asyncRead(buffer: Uint8Array, offset: number, count: number): Promise<any>;
+    /**
+     * 异步将字节写入当前流。
+     * @param buffer 要写入的字节。
+     * @param offset 缓冲区中的从零开始的字节偏移量，从此处开始将字节写入当前流。
+     * @param count 要写入当前流的字节数。
+     * @returns 返回一个 Promise，该 Promise 在写入完成时解析为写入的字节数，或者在发生错误时解析为错误对象。
+     */
+    asyncWrite(buffer: Uint8Array, offset: number, count: number): Promise<any>;
     /**
      * 从当前流中读取字节并将其写入到另一流中。
      * @param destination 当前流的内容将复制到的流。
@@ -63,6 +105,10 @@ export default abstract class Stream {
      * @throws {RangeError} 如果缓冲区大小小于等于 0。
      */
     copyTo(destination: Stream, bufferSize: number): void;
+    /**
+     * 释放此流使用的所有资源。
+     */
+    [Symbol.dispose](): void;
     /**
      * 关闭当前流并释放与之关联的所有资源（如套接字和文件句柄）。
      */
