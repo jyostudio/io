@@ -1,13 +1,16 @@
 {
     "plugin": [
-        "typedoc-github-theme",
-        "typedoc-plugin-missing-exports"
+        "typedoc-github-theme"
     ],
     "entryPoints": [
-        "./src/index.d.ts"
+        "./src/index.ts"
     ],
     "out": "./docs",
     "lang": "zh",
-    "hideGenerator": true,
-    "disableSources": true
+    "includeVersion":true,
+    "hideGenerator": false,
+    "disableSources": false,
+    "tsconfig": "tsconfig.json",
+    "suppressCommentWarningsInDeclarationFiles": true,
+    "skipErrorChecking": true
 }

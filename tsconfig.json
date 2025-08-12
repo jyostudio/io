@@ -1,31 +1,41 @@
 {
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    "public",
-    "test",
-    "tests",
-    "tmp",
-    "vendor"
-  ],
-  "include": [
-    "src/**/*.d.ts",
-  ],
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "allowImportingTsExtensions": true,
-    "customConditions": ["module"],
-    "allowArbitraryExtensions": true,
-    "noEmit": true,
-    "allowJs": true,
-    "checkJs": false,
-    "verbatimModuleSyntax": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true
-  }
+    // include代表需要编译哪些文件；路径：两个**,代表当前文件下的所有目录，一个*代表当前文件夹下的所有文件
+    "include": [
+        "./src/**/*"
+    ],
+    // 编译器的选项
+    "compilerOptions": {
+        // 用來指定ts被编译的ES的版本  "target":"esnext"这是最新版本
+        "target": "esnext",
+        // 指定要使用的模块化规范
+        "module": "esnext",
+        // 用来指定编译后文件所在的目录,编译后的文件放在哪
+        "outDir": "./dist",
+        // 模块解析策略，"node"代表使用Node.js的模块解析策略
+        "moduleResolution": "node",
+        // 生成对应的.d.ts文件
+        "declaration": true,
+        "declarationDir": "dist",
+        "declarationMap": true,
+        // 是否对js文件进行编译，默认是false
+        "allowJs": true,
+        // 检查js代码是否符合逻辑规范，默认是false
+        "checkJs": true,
+        //是否移除注释
+        "removeComments": false,
+        // 不生成编译后的文件,只是执行过程，只是检查语法
+        "noEmit": false,
+        //当有错误的时候不生成编译后的文件
+        "noEmitOnError": true,
+        //所有严格检查的总开关
+        "strict": true,
+        // 用来设置编译后的文件，是否采用严格模式
+        "alwaysStrict": true,
+        // 不允许出现隐式的any类型
+        "noImplicitAny": true,
+        // 不允许出现隐式的this
+        "noImplicitThis": true,
+        // 严格的检查空值  例：div不存在，在获取dom的时候
+        "strictNullChecks": true,
+    }
 }
