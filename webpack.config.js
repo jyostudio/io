@@ -64,7 +64,10 @@ export default {
                                         "useBuiltIns": "usage"
                                     }
                                 ]
-                            ]
+                            ],
+                            // 禁用一些可能影响代码顺序的优化
+                            compact: false,
+                            minified: false
                         }
                     }
                 ],

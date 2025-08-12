@@ -94,8 +94,6 @@ export default class MemoryStream extends Stream {
      * @returns 流的长度（以字节为单位）。
      */
     public get length() {
-        this.#checkOpen();
-
         return this.#length - this.#origin;
     }
 
@@ -104,8 +102,6 @@ export default class MemoryStream extends Stream {
      * @returns 流的缓冲区的可使用部分的长度。
      */
     public get capacity() {
-        this.#checkOpen();
-
         return this.#capacity - this.#origin;
     }
 
@@ -115,8 +111,6 @@ export default class MemoryStream extends Stream {
      */
     @checkSetterType(Number)
     public set capacity(value: number) {
-        this.#checkOpen();
-
         value = value | 0;
 
         if (value < 0) {
@@ -152,8 +146,6 @@ export default class MemoryStream extends Stream {
      * @returns 流中的当前位置。
      */
     public get position() {
-        this.#checkOpen();
-
         return this.#position - this.#origin;
     }
 
@@ -163,8 +155,6 @@ export default class MemoryStream extends Stream {
      */
     @checkSetterType(Number)
     public set position(value: number) {
-        this.#checkOpen();
-
         value = value | 0;
 
         if (value < 0) {
@@ -308,17 +298,6 @@ export default class MemoryStream extends Stream {
     }
 
     /**
-     * 检查流是否已打开。
-     * @throws {Error} 如果流已关闭。
-     * @private
-     */
-    #checkOpen() {
-        if (!this.#isOpen) {
-            throw new Error("流已关闭。");
-        }
-    }
-
-    /**
      * 确保容量足够大以容纳指定的值。
      * @param value 需要的容量。
      * @returns 如果容量已更改，则为 true；否则为 false。
@@ -385,10 +364,7 @@ export default class MemoryStream extends Stream {
     public override flush(): void;
 
     public override flush(...params: any): any {
-        MemoryStream.prototype.flush = overload([], function (this: MemoryStream): void {
-            this.#checkOpen();
-        });
-
+        MemoryStream.prototype.flush = overload([], function (this: MemoryStream): void {});
         return MemoryStream.prototype.flush.apply(this, params);
     }
 
@@ -400,8 +376,6 @@ export default class MemoryStream extends Stream {
 
     public getBuffer(...params: any): any {
         MemoryStream.prototype.getBuffer = overload([], function (this: MemoryStream): Uint8Array {
-            this.#checkOpen();
-
             if (!this.#exposable) {
                 throw new Error("MemoryStream 未使用可访问的缓冲区创建。");
             }
@@ -423,8 +397,6 @@ export default class MemoryStream extends Stream {
 
     public override read(...params: any): any {
         MemoryStream.prototype.read = overload([Uint8Array, Number, Number], function (this: MemoryStream, buffer: Uint8Array, offset: number, count: number): number {
-            this.#checkOpen();
-
             if (offset < 0) {
                 throw new RangeError("“offset”不能小于 0。");
             }
@@ -472,8 +444,6 @@ export default class MemoryStream extends Stream {
 
     public override readByte(...params: any): any {
         MemoryStream.prototype.readByte = overload([], function (this: MemoryStream): number {
-            this.#checkOpen();
-
             if (this.#position >= this.#length) return -1;
 
             return (this.#buffer as Uint8Array)[this.#position++];
@@ -492,8 +462,6 @@ export default class MemoryStream extends Stream {
 
     public override seek(...params: any): any {
         MemoryStream.prototype.seek = overload([Number, SeekOrigin], function (this: MemoryStream, offset: number, loc: SeekOrigin): number {
-            this.#checkOpen();
-
             if (offset > MemoryStream.#MEM_STREAM_MAX_LENGTH) {
                 throw new RangeError("“offset”必须小于 2^31 - 1。");
             }
@@ -543,8 +511,6 @@ export default class MemoryStream extends Stream {
 
     public override setLength(...params: any): any {
         MemoryStream.prototype.setLength = overload([Number], function (this: MemoryStream, value: number): void {
-            this.#checkOpen();
-
             if (value < 0 || value > MemoryStream.#MEM_STREAM_MAX_LENGTH || value > (Number.MAX_SAFE_INTEGER - this.#origin)) {
                 throw new RangeError("“value”必须是非负数，并且小于 2^31 - 1 - origin。");
             }
@@ -574,8 +540,6 @@ export default class MemoryStream extends Stream {
 
     public toArray(...params: any): any {
         MemoryStream.prototype.toArray = overload([], function (this: MemoryStream): number[] {
-            this.#checkOpen();
-
             const copy = new Uint8Array(this.#length - this.#origin);
             _Buffer.blockCopy(this.#buffer as Uint8Array, this.#origin, copy, 0, this.#length - this.#origin);
             return Array.from(copy);
@@ -594,8 +558,6 @@ export default class MemoryStream extends Stream {
 
     public override write(...params: any): any {
         MemoryStream.prototype.write = overload([Uint8Array, Number, Number], function (this: MemoryStream, buffer: Uint8Array, offset: number, count: number): void {
-            this.#checkOpen();
-
             if (!this.#writable) {
                 throw new Error("当前流不支持写入操作。");
             }
@@ -660,8 +622,6 @@ export default class MemoryStream extends Stream {
 
     public override writeByte(...params: any): any {
         MemoryStream.prototype.writeByte = overload([Number], function (this: MemoryStream, value: number): void {
-            this.#checkOpen();
-
             if (!this.#writable) {
                 throw new Error("当前流不支持写入操作。");
             }
@@ -704,8 +664,6 @@ export default class MemoryStream extends Stream {
 
     public writeTo(...params: any): any {
         MemoryStream.prototype.writeTo = overload([Stream], function (this: MemoryStream, stream: Stream): void {
-            this.#checkOpen();
-
             stream.write(this.#buffer as Uint8Array, this.#origin, this.#length - this.#origin);
         });
 

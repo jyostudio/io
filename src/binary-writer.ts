@@ -468,10 +468,10 @@ export default class BinaryWriter {
         BinaryWriter.prototype.write7BitEncodedInt = overload([Number], function (this: BinaryWriter, value: number): void {
             let v = +value;
             while (v >= 0x80) {
-                this.writeByte(v | 0x80);
+                this.writeByte((v & 0x7F) | 0x80);
                 v >>= 7;
             }
-            this.writeByte(v);
+            this.writeByte(v & 0x7F);
         });
 
         return BinaryWriter.prototype.write7BitEncodedInt.apply(this, params);

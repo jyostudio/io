@@ -133,10 +133,10 @@ export default abstract class Stream {
      * @param count 要从当前流中最多读取的字节数。
      * @returns 返回一个 Promise，该 Promise 在读取完成时解析为读取的字节数，或者在发生错误时解析为错误对象。
      */
-    public asyncRead(buffer: Uint8Array, offset: number, count: number): Promise<any>;
+    public readAsync(buffer: Uint8Array, offset: number, count: number): Promise<any>;
 
-    public asyncRead(...params: any): any {
-        Stream.prototype.asyncRead = overload([Uint8Array, Number, Number], function (this: Stream, buffer: Uint8Array, offset: number, count: number): Promise<any> {
+    public readAsync(...params: any): any {
+        Stream.prototype.readAsync = overload([Uint8Array, Number, Number], function (this: Stream, buffer: Uint8Array, offset: number, count: number): Promise<any> {
             return new Promise((resolve) => {
                 if (!this.canRead) {
                     resolve(new EvalError("当前流不支持读取。"));
@@ -161,7 +161,7 @@ export default abstract class Stream {
             });
         });
 
-        return Stream.prototype.asyncRead.apply(this, params);
+        return Stream.prototype.readAsync.apply(this, params);
     }
 
     /**
@@ -171,10 +171,10 @@ export default abstract class Stream {
      * @param count 要写入当前流的字节数。
      * @returns 返回一个 Promise，该 Promise 在写入完成时解析为写入的字节数，或者在发生错误时解析为错误对象。
      */
-    public asyncWrite(buffer: Uint8Array, offset: number, count: number): Promise<any>;
+    public writeAsync(buffer: Uint8Array, offset: number, count: number): Promise<any>;
 
-    public asyncWrite(...params: any): any {
-        Stream.prototype.asyncWrite = overload([Uint8Array, Number, Number], function (this: Stream, buffer: Uint8Array, offset: number, count: number): Promise<any> {
+    public writeAsync(...params: any): any {
+        Stream.prototype.writeAsync = overload([Uint8Array, Number, Number], function (this: Stream, buffer: Uint8Array, offset: number, count: number): Promise<any> {
             return new Promise((resolve) => {
                 if (!this.canWrite) {
                     resolve(new EvalError("当前流不支持写入。"));
@@ -195,7 +195,7 @@ export default abstract class Stream {
             });
         });
 
-        return Stream.prototype.asyncWrite.apply(this, params);
+        return Stream.prototype.writeAsync.apply(this, params);
     }
 
     /**

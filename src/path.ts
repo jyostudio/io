@@ -795,7 +795,7 @@ export default class Path {
 
                 for (let i = 0; i < pathsArray.length; i++) {
                     if (typeof pathsArray[i] !== "string") {
-                        throw new Error(`paths[${i}] is not a string.`);
+                        throw new Error(`paths[${i}] 必须是字符串。`);
                     }
                 }
 
@@ -978,14 +978,14 @@ export default class Path {
     public static getFullPath(...params: any): string {
         Path.getFullPath = overload([[String, null]], function (path: string | null): string {
             if (path === null || path.trim() === "") {
-                throw new Error("Path cannot be null or empty.");
+                throw new Error("路径不能为 null 或空。");
             }
 
             Path.#checkInvalidPathChars(path);
 
             // 检查通配符
             if (Path.#hasWildCardCharacters(path)) {
-                throw new Error("Path contains wildcard characters.");
+                throw new Error("路径包含通配符字符。");
             }
 
             let normalizedPath = Path.#normalizePath(path);

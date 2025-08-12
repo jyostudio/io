@@ -82,7 +82,7 @@ export default abstract class Stream {
      * @param count 要从当前流中最多读取的字节数。
      * @returns 返回一个 Promise，该 Promise 在读取完成时解析为读取的字节数，或者在发生错误时解析为错误对象。
      */
-    asyncRead(buffer: Uint8Array, offset: number, count: number): Promise<any>;
+    readAsync(buffer: Uint8Array, offset: number, count: number): Promise<any>;
     /**
      * 异步将字节写入当前流。
      * @param buffer 要写入的字节。
@@ -90,7 +90,7 @@ export default abstract class Stream {
      * @param count 要写入当前流的字节数。
      * @returns 返回一个 Promise，该 Promise 在写入完成时解析为写入的字节数，或者在发生错误时解析为错误对象。
      */
-    asyncWrite(buffer: Uint8Array, offset: number, count: number): Promise<any>;
+    writeAsync(buffer: Uint8Array, offset: number, count: number): Promise<any>;
     /**
      * 从当前流中读取字节并将其写入到另一流中。
      * @param destination 当前流的内容将复制到的流。
