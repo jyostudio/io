@@ -6,3 +6,5 @@ export { default as BinaryWriter } from "./binary-writer";
 export { default as TextReader } from "./text-reader";
 export { default as TextWriter } from "./text-writer";
 export { default as StringReader } from "./string-reader";
+export { default as StringWriter } from "./string-writer";
+export { default as Path } from "./path";

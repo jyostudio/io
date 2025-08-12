@@ -27,6 +27,9 @@
     "url": "https://github.com/jyostudio/io/issues"
   },
   "homepage": "https://github.com/jyostudio/io#readme",
+  "engines": {
+    "node": "^23"
+  },
   "devDependencies": {
     "@babel/core": "^7.28.0",
     "@babel/plugin-proposal-decorators": "^7.28.0",

@@ -5,14 +5,11 @@
     "entryPoints": [
         "./src/index.ts"
     ],
-    "exclude": [
-        "**/*.test.ts",
-        "**/node_modules/**"
-    ],
     "out": "./docs",
     "lang": "zh",
-    "hideGenerator": true,
-    "disableSources": true,
+    "includeVersion":true,
+    "hideGenerator": false,
+    "disableSources": false,
     "tsconfig": "tsconfig.json",
     "suppressCommentWarningsInDeclarationFiles": true,
     "skipErrorChecking": true
