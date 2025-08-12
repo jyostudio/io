@@ -4,6 +4,11 @@ import SeekOrigin from "./seek-origin";
 import { setDisposeStatus } from "./_utils";
 
 /**
+ * 无后备存储区的 Stream 实例。
+ */
+let nullStreamInstance: Stream | null = null;
+
+/**
  * 提供字节序列的一般视图。 这是一个抽象类。
  */
 export default abstract class Stream {
@@ -13,15 +18,10 @@ export default abstract class Stream {
     static #DEFAULT_COPY_BUFFER_SIZE = 81920;
 
     /**
-     * 无后备存储区的 Stream 实例。
-     */
-    static #nullInstance: Stream | null = null;
-
-    /**
      * 无后备存储区的 Stream。
      */
     public static get null(): Stream {
-        return this.#nullInstance = this.#nullInstance ?? new NullStream();
+        return nullStreamInstance = nullStreamInstance ?? new NullStream();
     }
 
     /**
