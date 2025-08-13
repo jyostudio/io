@@ -1,7 +1,7 @@
 import List from "@jyostudio/list";
 import overload from "@jyostudio/overload";
 import { StringBuilder } from "@jyostudio/text";
-import _FileHelper from "./_fileHelper";
+import _FileHelper from "./_file-helper";
 
 /**
  * 对包含文件或目录路径信息的 String 实例执行操作。这些操作是以跨平台的方式执行的。
