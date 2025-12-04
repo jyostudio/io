@@ -97,14 +97,14 @@ export default class BinaryWriter {
      * 将字符数组写入当前流，并根据所使用的 Encoding 和向流中写入的特定字符，提升流的当前位置。
      * @param chars 包含要写入的数据的字符数组。
      */
-    writeChars(chars: List<string>): void;
+    writeChars(chars: List<String>): void;
     /**
      * 将字符数组部分写入当前流，并根据所使用的 Encoding（可能还根据向流中写入的特定字符），提升流的当前位置。
      * @param chars 包含要写入的数据的字符数组。
      * @param index 要从 chars 中读取且要写入流的第一个字符的索引。
      * @param count 要从 chars 中读取且要写入流的字符数。
      */
-    writeChars(chars: List<string>, index: number, count: number): void;
+    writeChars(chars: List<String>, index: number, count: number): void;
     /**
      * 将 8 字节浮点值写入当前流，并将流的位置提升 8 个字节。
      * @param value 要写入的 8 字节浮点值。

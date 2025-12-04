@@ -1,17 +1,17 @@
 import overload from "@jyostudio/overload";
-import { checkSetterType } from "@jyostudio/overload/dist/decorator.js";
-import SeekOrigin from "./seek-origin";
+import { checkSetterType } from "@jyostudio/overload/dist/decorator";
 import { setDisposeStatus } from "./_utils";
-
-/**
- * 无后备存储区的 Stream 实例。
- */
-let nullStreamInstance: Stream | null = null;
+import SeekOrigin from "./seek-origin";
 
 /**
  * 提供字节序列的一般视图。 这是一个抽象类。
  */
 export default abstract class Stream {
+    /**
+     * 无后备存储区的 Stream 实例。
+     */
+    static #nullStreamInstance: Stream | null = null;
+
     /**
      * 默认的拷贝缓冲区大小。
      */
@@ -21,7 +21,7 @@ export default abstract class Stream {
      * 无后备存储区的 Stream。
      */
     public static get null(): Stream {
-        return nullStreamInstance = nullStreamInstance ?? new NullStream();
+        return this.#nullStreamInstance ??= new NullStream();
     }
 
     /**
@@ -118,12 +118,11 @@ export default abstract class Stream {
      * @throws {EvalError} 如果尝试直接实例化 Stream 类。
      */
     protected constructor();
-
     protected constructor(...params: any) {
         if (new.target === Stream) {
             throw new EvalError("无法创建抽象类“Stream”的实例。");
         }
-        overload([], () => { })(...params);
+        overload([], () => { }).apply(this, params);
     }
 
     /**
@@ -134,7 +133,6 @@ export default abstract class Stream {
      * @returns 返回一个 Promise，该 Promise 在读取完成时解析为读取的字节数，或者在发生错误时解析为错误对象。
      */
     public readAsync(buffer: Uint8Array, offset: number, count: number): Promise<any>;
-
     public readAsync(...params: any): any {
         Stream.prototype.readAsync = overload([Uint8Array, Number, Number], function (this: Stream, buffer: Uint8Array, offset: number, count: number): Promise<any> {
             return new Promise((resolve) => {
@@ -172,7 +170,6 @@ export default abstract class Stream {
      * @returns 返回一个 Promise，该 Promise 在写入完成时解析为写入的字节数，或者在发生错误时解析为错误对象。
      */
     public writeAsync(buffer: Uint8Array, offset: number, count: number): Promise<any>;
-
     public writeAsync(...params: any): any {
         Stream.prototype.writeAsync = overload([Uint8Array, Number, Number], function (this: Stream, buffer: Uint8Array, offset: number, count: number): Promise<any> {
             return new Promise((resolve) => {
@@ -204,7 +201,6 @@ export default abstract class Stream {
      * @throws {Error} 如果流已关闭，或者目标流已关闭，或者当前流不支持读取操作，或者目标流不支持写入操作。
      */
     public copyTo(destination: Stream): void;
-
     /**
      * 使用指定的缓冲区大小，从当前流中读取字节并将其写入到另一流中。
      * @param destination 当前流的内容将复制到的流。
@@ -213,7 +209,6 @@ export default abstract class Stream {
      * @throws {RangeError} 如果缓冲区大小小于等于 0。
      */
     public copyTo(destination: Stream, bufferSize: number): void;
-
     public copyTo(...params: any): any {
         Stream.prototype.copyTo = overload()
             .add([Stream], function (this: Stream, destination: Stream): void {
@@ -263,7 +258,6 @@ export default abstract class Stream {
      * 关闭当前流并释放与之关联的所有资源（如套接字和文件句柄）。
      */
     public close(): void;
-
     public close(...params: any): any {
         Stream.prototype.close = overload([], function (this: Stream): void {
             this[Symbol.dispose]();
@@ -304,7 +298,6 @@ export default abstract class Stream {
      * @returns 强制转换为 Int32 的无符号字节，如果到达流的末尾，则为 -1。
      */
     public readByte(): number;
-
     public readByte(...params: any): any {
         Stream.prototype.readByte = overload([], function (this: Stream): number {
             if (!this.canRead) {
@@ -336,7 +329,6 @@ export default abstract class Stream {
      * @throws {RangeError} 如果 value 不在 0 到 255 之间。
      */
     public writeByte(value: number): void;
-
     public writeByte(...params: any): any {
         Stream.prototype.writeByte = overload([Number], function (this: Stream, value: number): void {
             if (!this.canWrite) {

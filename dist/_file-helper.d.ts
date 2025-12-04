@@ -19,4 +19,4 @@ export default class _FileHelper {
      */
     static sync(path: string): Uint8Array;
 }
-//# sourceMappingURL=_fileHelper.d.ts.map
+//# sourceMappingURL=_file-helper.d.ts.map

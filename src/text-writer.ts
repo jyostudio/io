@@ -1,5 +1,5 @@
 import overload from "@jyostudio/overload";
-import { checkSetterType } from "@jyostudio/overload/dist/decorator.js";
+import { checkSetterType } from "@jyostudio/overload/dist/decorator";
 import { Encoding } from "@jyostudio/text";
 import { setDisposeStatus } from "./_utils";
 
@@ -46,12 +46,7 @@ export default abstract class TextWriter {
      */
     @checkSetterType(String)
     public set newLine(value: string) {
-        let cleanValue = value;
-        if (value.trim() === "") {
-            cleanValue = this.#initialNewLine;
-        }
-
-        this.#coreNewLine = cleanValue.split("");
+        this.#coreNewLine = value.split("");
     }
 
     /**
@@ -64,17 +59,17 @@ export default abstract class TextWriter {
      * 基于所指定的构造参数，初始化 TextWriter 类的新实例。
      */
     public constructor();
-
     public constructor(...params: any) {
         if (new.target === TextWriter) {
             throw new EvalError("无法创建抽象类“TextWriter”的实例。");
         }
 
-        return TextWriter[CONSTRUCTOR_SYMBOL].apply(this, params);
+         TextWriter[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): TextWriter {
+    private static [CONSTRUCTOR_SYMBOL](...params: any): void {
         TextWriter[CONSTRUCTOR_SYMBOL] = overload([], function (this: TextWriter) { });
+        
         return TextWriter[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
@@ -82,7 +77,6 @@ export default abstract class TextWriter {
      * 关闭当前编写器并释放任何与该编写器关联的系统资源。
      */
     public close(): void;
-
     public close(...params: any): any {
         TextWriter.prototype.close = overload([], function (this: TextWriter): void {
             TextWriter.prototype[Symbol.dispose].apply(this);
@@ -102,7 +96,6 @@ export default abstract class TextWriter {
      * 清理当前编写器的所有缓冲区，使所有缓冲数据写入基础设备。
      */
     public flush(): void;
-
     public flush(...params: any): any {
         TextWriter.prototype.flush = overload([], function (this: TextWriter): void { });
         return TextWriter.prototype.flush.apply(this, params);
@@ -113,13 +106,11 @@ export default abstract class TextWriter {
      * @param buffer 要写入文本流中的字节数组。
      */
     public write(buffer: Uint8Array): void;
-
     /**
      * 将字符数组写入该文本字符串或流。
      * @param buffer 要写入文本流中的字符数组。
      */
     public write(buffer: Array<string>): void;
-
     /**
      * 将字符的子数组写入文本字符串或流。
      * @param buffer 要从中写出数据的字符数组。
@@ -127,31 +118,26 @@ export default abstract class TextWriter {
      * @param count 要写入的字符数。
      */
     public write(buffer: Array<string>, index: number, count: number): void;
-
     /**
      * 将 Boolean 值的文本表示形式写入文本字符串或流。
      * @param value 要写入的 Boolean 值。
      */
     public write(value: boolean): void;
-
     /**
      * 将数值的文本表示形式写入文本字符串或流。
      * @param value 要写入的数值。
      */
     public write(value: number): void;
-
     /**
      * 将字符串写入到文本字符串或流。
      * @param value 要写入的字符串。
      */
     public write(value: string): void;
-
     /**
      * 通过在对象上调用 toString 方法将此对象的文本表示形式写入文本字符串或流。
      * @param value 要写入的对象。
      */
     public write(value: object): void;
-
     public write(...params: any): any {
         TextWriter.prototype.write = overload()
             .add([Uint8Array], function (this: TextWriter, buffer: Uint8Array): void {
@@ -206,19 +192,16 @@ export default abstract class TextWriter {
      * 将行结束符的字符串写入文本字符串或流。
      */
     public writeLine(): void;
-
     /**
      * 将后跟行结束符的字符串写入文本字符串或流。
      * @param value 要写入的字符串。
      */
     public writeLine(value: string): void;
-
     /**
      * 将后跟行结束符的字符数组写入文本字符串或流。
      * @param buffer 从其读取数据的字符数组。
      */
     public writeLine(buffer: Array<string>): void;
-
     /**
      * 将后跟行结束符的字符子数组写入文本字符串或流。
      * @param buffer 从其读取数据的字符数组。
@@ -226,25 +209,21 @@ export default abstract class TextWriter {
      * @param count 要写入的最大字符数。
      */
     public writeLine(buffer: Array<string>, index: number, count: number): void;
-
     /**
      * 将后面带有行结束符的 Boolean 值的文本表示形式写入文本字符串或流。
      * @param value 要写入的 Boolean 值。
      */
     public writeLine(value: boolean): void;
-
     /**
      * 将后跟行结束符的数值的文本表示形式写入文本字符串或流。
      * @param value 要写入的数值。
      */
     public writeLine(value: number): void;
-
     /**
      * 通过在对象上调用 toString 方法将后跟行结束符的此对象的文本表示形式写入文本字符串或流。
      * @param value 要写入的对象。
      */
     public writeLine(value: object): void;
-
     public writeLine(...params: any): any {
         TextWriter.prototype.writeLine = overload()
             .add([], function (this: TextWriter): void {
@@ -313,7 +292,6 @@ class NullTextWriter extends TextWriter {
      * @param buffer 要写入文本流中的字符数组。
      */
     public override write(buffer: Array<string>): void;
-
     /**
      * 将字符的子数组写入文本字符串或流。
      * @param buffer 要从中写出数据的字符数组。
@@ -321,31 +299,26 @@ class NullTextWriter extends TextWriter {
      * @param count 要写入的字符数。
      */
     public override write(buffer: Array<string>, index: number, count: number): void;
-
     /**
      * 将 Boolean 值的文本表示形式写入文本字符串或流。
      * @param value 要写入的 Boolean 值。
      */
     public override write(value: boolean): void;
-
     /**
      * 将数值的文本表示形式写入文本字符串或流。
      * @param value 要写入的数值。
      */
     public override write(value: number): void;
-
     /**
      * 将字符串写入到文本字符串或流。
      * @param value 要写入的字符串。
      */
     public override write(value: string): void;
-
     /**
      * 通过在对象上调用 toString 方法将此对象的文本表示形式写入文本字符串或流。
      * @param value 要写入的对象。
      */
     public override write(value: object): void;
-
     public override write(...params: any): any {
         NullTextWriter.prototype.write = overload()
             .add([Array, Number, Number], function (this: NullTextWriter, buffer: Array<string>, index: number, count: number): void { })
@@ -359,19 +332,16 @@ class NullTextWriter extends TextWriter {
      * 将行结束符的字符串写入文本字符串或流。
      */
     public override writeLine(): void;
-
     /**
      * 将后跟行结束符的字符串写入文本字符串或流。
      * @param value 要写入的字符串。
      */
     public override writeLine(value: string): void;
-
     /**
      * 将后跟行结束符的字符数组写入文本字符串或流。
      * @param buffer 从其读取数据的字符数组。
      */
     public override writeLine(buffer: Array<string>): void;
-
     /**
      * 将后跟行结束符的字符子数组写入文本字符串或流。
      * @param buffer 从其读取数据的字符数组。
@@ -379,25 +349,21 @@ class NullTextWriter extends TextWriter {
      * @param count 要写入的最大字符数。
      */
     public override writeLine(buffer: Array<string>, index: number, count: number): void;
-
     /**
      * 将后面带有行结束符的 Boolean 值的文本表示形式写入文本字符串或流。
      * @param value 要写入的 Boolean 值。
      */
     public override writeLine(value: boolean): void;
-
     /**
      * 将后跟行结束符的数值的文本表示形式写入文本字符串或流。
      * @param value 要写入的数值。
      */
     public override writeLine(value: number): void;
-
     /**
      * 通过在对象上调用 toString 方法将后跟行结束符的此对象的文本表示形式写入文本字符串或流。
      * @param value 要写入的对象。
      */
     public override writeLine(value: object): void;
-
     public override writeLine(...params: any): any {
         NullTextWriter.prototype.writeLine = overload()
             .add([], function (this: NullTextWriter): void { })

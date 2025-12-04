@@ -2,9 +2,9 @@ import overload from "@jyostudio/overload";
 import { checkSetterType } from "@jyostudio/overload/dist/decorator";
 import { Encoding, UTF8Encoding } from "@jyostudio/text";
 import _Buffer from "./_buffer";
+import { setDisposeStatus } from "./_utils";
 import SeekOrigin from "./seek-origin";
 import Stream from "./stream";
-import { setDisposeStatus } from "./_utils";
 
 const CONSTRUCTOR_SYMBOL = Symbol("constructor");
 
@@ -72,14 +72,12 @@ export default class BinaryReader {
      * @param input 输入流。
      */
     public constructor(input: Stream);
-
     /**
      * 基于所指定的流和特定的字符编码，初始化 BinaryReader 类的新实例。
      * @param input 输入流。
      * @param encoding 要使用的字符编码。
      */
     public constructor(input: Stream, encoding: Encoding);
-
     /**
      * 基于所指定的流和特定的字符编码，初始化 BinaryReader 类的新实例。
      * @param input 输入流。
@@ -87,18 +85,17 @@ export default class BinaryReader {
      * @param bigEndian 是否使用大端字节序。
      */
     public constructor(input: Stream, encoding: Encoding, bigEndian: boolean);
-
     public constructor(...params: any) {
-        return BinaryReader[CONSTRUCTOR_SYMBOL].apply(this, params);
+        BinaryReader[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): BinaryReader {
+    private static [CONSTRUCTOR_SYMBOL](...params: any): void {
         BinaryReader[CONSTRUCTOR_SYMBOL] = overload()
             .add([Stream], function (this: BinaryReader, input: Stream) {
-                return BinaryReader[CONSTRUCTOR_SYMBOL].call(this, input, new UTF8Encoding(), false);
+                BinaryReader[CONSTRUCTOR_SYMBOL].call(this, input, new UTF8Encoding(), false);
             })
             .add([Stream, Encoding], function (this: BinaryReader, input: Stream, encoding: Encoding) {
-                return BinaryReader[CONSTRUCTOR_SYMBOL].call(this, input, encoding, false);
+                BinaryReader[CONSTRUCTOR_SYMBOL].call(this, input, encoding, false);
             })
             .add([Stream, Encoding, Boolean], function (this: BinaryReader, input: Stream, encoding: Encoding, bigEndian: boolean) {
                 if (!input.canRead) throw new EvalError("这个流不支持读取。");
@@ -165,7 +162,6 @@ export default class BinaryReader {
      * 关闭当前阅读器及基础流。
      */
     public close(): void;
-
     public close(...params: any): any {
         BinaryReader.prototype.close = overload([], function (this: BinaryReader): void {
             this[Symbol.dispose]();
@@ -179,7 +175,6 @@ export default class BinaryReader {
      * @returns 下一个可用的字符，或者，如果没有可用字符或者流不支持查找时为 -1。
      */
     public peekChar(): number;
-
     public peekChar(...params: any): any {
         BinaryReader.prototype.peekChar = overload([], function (this: BinaryReader): number {
             if (!this.#stream!.canSeek) {
@@ -200,7 +195,6 @@ export default class BinaryReader {
      * @returns 输入流中的下一个字符，如果当前无可用字符则为 -1。
      */
     public read(): number;
-
     /**
      * 从字节数组中的指定点开始，从流中读取指定的字节数。
      * @param buffer 将数据读入的缓冲区。
@@ -209,7 +203,6 @@ export default class BinaryReader {
      * @returns 读入 buffer 的字节数。 如果可用的字节没有请求的那么多，此数可能小于所请求的字节数；如果到达了流的末尾，此数可能为零。
      */
     public read(buffer: Uint8Array, index: number, count: number): number;
-
     /**
      * 从字符数组中的指定点开始，从流中读取指定的字符数。
      * @param buffer 将数据读入的缓冲区。
@@ -218,7 +211,6 @@ export default class BinaryReader {
      * @returns 读入缓冲区的总字符数。 如果当前可用的字节没有请求的那么多，此数可能小于所请求的字符数；如果到达了流的末尾，此数可能为零。
      */
     public read(buffer: Array<string>, index: number, count: number): number;
-
     public read(...params: any): any {
         BinaryReader.prototype.read = overload()
             .add([], function (this: BinaryReader): number {
@@ -289,7 +281,6 @@ export default class BinaryReader {
      * @returns 压缩格式的 32 位整数。
      */
     public read7BitEncodedInt(): number;
-
     public read7BitEncodedInt(...params: any): any {
         BinaryReader.prototype.read7BitEncodedInt = overload([], function (this: BinaryReader): number {
             let count = 0;
@@ -317,7 +308,6 @@ export default class BinaryReader {
      * @returns 如果字节为非零，则为 true，否则为 false。
      */
     public readBoolean(): boolean;
-
     public readBoolean(...params: any): any {
         BinaryReader.prototype.readBoolean = overload([], function (this: BinaryReader): boolean {
             this.#fillBuffer(1);
@@ -332,7 +322,6 @@ export default class BinaryReader {
      * @returns 从当前流中读取的下一个字节。
      */
     public readByte(): number;
-
     public readByte(...params: any): any {
         BinaryReader.prototype.readByte = overload([], function (this: BinaryReader): number {
             const b = this.#stream!.readByte();
@@ -351,7 +340,6 @@ export default class BinaryReader {
      * @returns 包含从基础流中读取的数据的字节数组。 如果到达了流的末尾，则该字节数组可能小于所请求的字节数。
      */
     public readBytes(count: number): Uint8Array;
-
     public readBytes(...params: any): any {
         BinaryReader.prototype.readBytes = overload([Number], function (this: BinaryReader, count: number): Uint8Array {
             if (count === 0) {
@@ -387,7 +375,6 @@ export default class BinaryReader {
      * @returns 从当前流中读取的字符。
      */
     public readChar(): string;
-
     public readChar(...params: any): any {
         BinaryReader.prototype.readChar = overload([], function (this: BinaryReader): string {
             const value = this.read();
@@ -406,7 +393,6 @@ export default class BinaryReader {
      * @returns 包含从基础流中读取的数据的字符数组。 如果到达了流的末尾，则该字符数组可能小于所请求的字符数。
      */
     public readChars(count: number): Array<string>;
-
     public readChars(...params: any): any {
         BinaryReader.prototype.readChars = overload([Number], function (this: BinaryReader, count: number): Array<string> {
             const chars = [];
@@ -424,7 +410,6 @@ export default class BinaryReader {
      * @returns 从当前流中读取的具有 15 位整数和 16 位小数的定点数。
      */
     public readS15Fixed16(): number;
-
     public readS15Fixed16(...params: any): any {
         BinaryReader.prototype.readS15Fixed16 = overload([], function (this: BinaryReader): number {
             if (!this.#bigEndian) {
@@ -466,7 +451,6 @@ export default class BinaryReader {
      * @returns 从当前流中读取的具有 16 位整数和 16 位小数的定点数。
      */
     public readFixed(): number;
-
     public readFixed(...params: any): any {
         BinaryReader.prototype.readFixed = overload([], function (this: BinaryReader): number {
             if (!this.#bigEndian) {
@@ -498,7 +482,6 @@ export default class BinaryReader {
      * @returns 从当前流中读取的 8 字节浮点值。
      */
     public readDouble(): number;
-
     public readDouble(...params: any): any {
         BinaryReader.prototype.readDouble = overload([], function (this: BinaryReader): number {
             this.#fillBuffer.call(this, 8);
@@ -513,7 +496,6 @@ export default class BinaryReader {
      * @returns 从当前流中读取的 2 字节有符号整数。
      */
     public readInt16(): number;
-
     public readInt16(...params: any): any {
         BinaryReader.prototype.readInt16 = overload([], function (this: BinaryReader): number {
             this.#fillBuffer.call(this, 2);
@@ -528,7 +510,6 @@ export default class BinaryReader {
      * @returns 从当前流中读取的 4 字节有符号整数。
      */
     public readInt32(): number;
-
     public readInt32(...params: any): any {
         BinaryReader.prototype.readInt32 = overload([], function (this: BinaryReader): number {
             this.#fillBuffer.call(this, 4);
@@ -543,7 +524,6 @@ export default class BinaryReader {
      * @returns 从当前流中读取的 8 字节有符号整数。
      */
     public readInt64(): bigint;
-
     public readInt64(...params: any): any {
         BinaryReader.prototype.readInt64 = overload([], function (this: BinaryReader): bigint {
             this.#fillBuffer.call(this, 8);
@@ -558,7 +538,6 @@ export default class BinaryReader {
      * @returns 从当前流中读取的一个有符号字节。
      */
     public readSByte(): number;
-
     public readSByte(...params: any): any {
         BinaryReader.prototype.readSByte = overload([], function (this: BinaryReader): number {
             this.#fillBuffer.call(this, 1);
@@ -577,7 +556,6 @@ export default class BinaryReader {
      * @returns 从当前流中读取的 4 字节浮点值。
      */
     public readSingle(): number;
-
     public readSingle(...params: any): any {
         BinaryReader.prototype.readSingle = overload([], function (this: BinaryReader): number {
             this.#fillBuffer.call(this, 4);
@@ -592,14 +570,12 @@ export default class BinaryReader {
      * @returns 正被读取的字符串。
      */
     public readString(): string;
-
     /**
      * 从当前流中读取一个字符串。 无前缀，字符长度根据参数指定。
      * @param count 要读取的字符数。
      * @returns 正被读取的字符串。
      */
     public readString(count: number): string;
-
     public readString(...params: any): any {
         BinaryReader.prototype.readString = overload()
             .add([], function (this: BinaryReader): string {
@@ -618,7 +594,6 @@ export default class BinaryReader {
      * @returns 从该流中读取的 2 字节无符号整数。
      */
     public readUInt16(): number;
-
     public readUInt16(...params: any): any {
         BinaryReader.prototype.readUInt16 = overload([], function (this: BinaryReader): number {
             this.#fillBuffer.call(this, 2);
@@ -633,7 +608,6 @@ export default class BinaryReader {
      * @returns 从该流中读取的 4 字节无符号整数。
      */
     public readUInt32(): number;
-
     public readUInt32(...params: any): any {
         BinaryReader.prototype.readUInt32 = overload([], function (this: BinaryReader): number {
             this.#fillBuffer.call(this, 4);
@@ -648,7 +622,6 @@ export default class BinaryReader {
      * @returns 从该流中读取的 8 字节无符号整数。
      */
     public readUInt64(): bigint;
-
     public readUInt64(...params: any): any {
         BinaryReader.prototype.readUInt64 = overload([], function (this: BinaryReader): bigint {
             this.#fillBuffer.call(this, 8);
@@ -665,7 +638,6 @@ export default class BinaryReader {
      * @returns 回调函数的返回值。
      */
     public pointer(moveTo: number, action: Function): Promise<any>;
-
     public pointer(...params: any): any {
         BinaryReader.prototype.pointer = overload([Number, Function], async function (this: BinaryReader, moveTo: number, action: Function): Promise<any> {
             if (!this.#stream!.canSeek) {

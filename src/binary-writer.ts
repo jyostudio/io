@@ -2,9 +2,9 @@ import List from "@jyostudio/list";
 import overload from "@jyostudio/overload";
 import { checkSetterType } from "@jyostudio/overload/dist/decorator";
 import { Encoding, StringBuilder, UTF8Encoding } from "@jyostudio/text";
+import { setDisposeStatus } from "./_utils";
 import SeekOrigin from "./seek-origin";
 import Stream from "./stream";
-import { setDisposeStatus } from "./_utils";
 
 const CONSTRUCTOR_SYMBOL = Symbol("constructor");
 
@@ -80,14 +80,12 @@ export default class BinaryWriter {
      * @param output 输出流。
      */
     public constructor(output: Stream);
-
     /**
      * 基于所指定的流和特定的字符编码，初始化 BinaryWriter 类的新实例。
      * @param output 输出流。
      * @param encoding 要使用的字符编码。
      */
     public constructor(output: Stream, encoding: Encoding);
-
     /**
      * 基于所指定的流和特定的字符编码，初始化 BinaryWriter 类的新实例。
      * @param output 输出流。
@@ -95,18 +93,17 @@ export default class BinaryWriter {
      * @param bigEndian 是否使用大端字节序。
      */
     public constructor(output: Stream, encoding: Encoding, bigEndian: boolean);
-
     public constructor(...params: any) {
-        return BinaryWriter[CONSTRUCTOR_SYMBOL].apply(this, params);
+        BinaryWriter[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): BinaryWriter {
+    private static [CONSTRUCTOR_SYMBOL](...params: any): void {
         BinaryWriter[CONSTRUCTOR_SYMBOL] = overload()
             .add([Stream], function (this: BinaryWriter, output: Stream) {
-                return BinaryWriter[CONSTRUCTOR_SYMBOL].call(this, output, new UTF8Encoding(), false);
+                BinaryWriter[CONSTRUCTOR_SYMBOL].call(this, output, new UTF8Encoding(), false);
             })
             .add([Stream, Encoding], function (this: BinaryWriter, output: Stream, encoding: Encoding) {
-                return BinaryWriter[CONSTRUCTOR_SYMBOL].call(this, output, encoding, false);
+                BinaryWriter[CONSTRUCTOR_SYMBOL].call(this, output, encoding, false);
             })
             .add([Stream, Encoding, Boolean], function (this: BinaryWriter, output: Stream, encoding: Encoding, bigEndian: boolean) {
                 if (!output.canWrite) throw new EvalError("这个流不支持写入。");
@@ -125,7 +122,6 @@ export default class BinaryWriter {
      * 关闭当前的 BinaryWriter 和基础流。
      */
     public close(): void;
-
     public close(...params: any): any {
         BinaryWriter.prototype.close = overload([], function (this: BinaryWriter): void {
             BinaryWriter.prototype[Symbol.dispose].apply(this);
@@ -151,7 +147,6 @@ export default class BinaryWriter {
      * 清理当前编写器的所有缓冲区，使所有缓冲数据写入基础设备。
      */
     public flush(): void;
-
     public flush(...params: any): any {
         BinaryWriter.prototype.flush = overload([], function (this: BinaryWriter): void {
             this.#stream!.flush();
@@ -167,7 +162,6 @@ export default class BinaryWriter {
      * @returns 包含当前流的位置。
      */
     public seek(offset: number, origin: SeekOrigin): number;
-
     public seek(...params: any): any {
         BinaryWriter.prototype.seek = overload([Number, SeekOrigin], function (this: BinaryWriter, offset: number, origin: SeekOrigin): number {
             return this.#stream!.seek(offset, origin);
@@ -181,7 +175,6 @@ export default class BinaryWriter {
      * @param value 要写入的 Boolean 值。
      */
     public writeBoolean(value: boolean): void;
-
     public writeBoolean(...params: any): any {
         BinaryWriter.prototype.writeBoolean = overload([Boolean], function (this: BinaryWriter, value: boolean): void {
             this.#view!.setUint8(0, value ? 1 : 0);
@@ -196,7 +189,6 @@ export default class BinaryWriter {
      * @param value 要写入的无符号字节。
      */
     public writeByte(value: number): void;
-
     public writeByte(...params: any): any {
         BinaryWriter.prototype.writeByte = overload([Number], function (this: BinaryWriter, value: number): void {
             this.#stream!.writeByte(value);
@@ -210,7 +202,6 @@ export default class BinaryWriter {
      * @param buffer 包含要写入的数据的字节数组。
      */
     public writeBytes(buffer: Uint8Array): void;
-
     /**
      * 将字节数组区域写入当前流。
      * @param buffer 包含要写入的数据的字节数组。
@@ -218,7 +209,6 @@ export default class BinaryWriter {
      * @param count 要从 buffer 中读取且要写入流的字节数。
      */
     public writeBytes(buffer: Uint8Array, index: number, count: number): void;
-
     public writeBytes(...params: any): any {
         BinaryWriter.prototype.writeBytes = overload()
             .add([Uint8Array], function (this: BinaryWriter, buffer: Uint8Array): void {
@@ -236,7 +226,6 @@ export default class BinaryWriter {
      * @param ch 要写入的非代理项 Unicode 字符。
      */
     public writeChar(ch: string): void;
-
     public writeChar(...params: any): any {
         BinaryWriter.prototype.writeChar = overload([String], function (this: BinaryWriter, value: string): void {
             if (value.length !== 1) {
@@ -254,22 +243,20 @@ export default class BinaryWriter {
      * 将字符数组写入当前流，并根据所使用的 Encoding 和向流中写入的特定字符，提升流的当前位置。
      * @param chars 包含要写入的数据的字符数组。
      */
-    public writeChars(chars: List<string>): void;
-
+    public writeChars(chars: List<String>): void;
     /**
      * 将字符数组部分写入当前流，并根据所使用的 Encoding（可能还根据向流中写入的特定字符），提升流的当前位置。
      * @param chars 包含要写入的数据的字符数组。
      * @param index 要从 chars 中读取且要写入流的第一个字符的索引。
      * @param count 要从 chars 中读取且要写入流的字符数。
      */
-    public writeChars(chars: List<string>, index: number, count: number): void;
-
+    public writeChars(chars: List<String>, index: number, count: number): void;
     public writeChars(...params: any): any {
         BinaryWriter.prototype.writeChars = overload()
-            .add([List.T(String)], function (this: BinaryWriter, value: List<string>): void {
+            .add([List.T(String)], function (this: BinaryWriter, value: List<String>): void {
                 this.writeChars.call(this, value, 0, value.length);
             })
-            .add([List.T(String), Number, Number], function (this: BinaryWriter, chars: List<string>, index: number, count: number): void {
+            .add([List.T(String), Number, Number], function (this: BinaryWriter, chars: List<String>, index: number, count: number): void {
                 const str = new StringBuilder();
 
                 for (let i = index; i < index + count; i++) {
@@ -291,7 +278,6 @@ export default class BinaryWriter {
      * @param value 要写入的 8 字节浮点值。
      */
     public writeDouble(value: number): void;
-
     public writeDouble(...params: any): any {
         BinaryWriter.prototype.writeDouble = overload([Number], function (this: BinaryWriter, value: number): void {
             this.#view!.setFloat64(0, value, !this.#bigEndian);
@@ -306,7 +292,6 @@ export default class BinaryWriter {
      * @param value 要写入的 4 字节浮点值。
      */
     public writeSingle(value: number): void;
-
     public writeSingle(...params: any): any {
         BinaryWriter.prototype.writeSingle = overload([Number], function (this: BinaryWriter, value: number): void {
             this.#view!.setFloat32(0, value, !this.#bigEndian);
@@ -321,7 +306,6 @@ export default class BinaryWriter {
      * @param value 要写入的值。
      */
     public writeString(value: string): void;
-
     public writeString(...params: any): any {
         BinaryWriter.prototype.writeString = overload([String], function (this: BinaryWriter, value: string): void {
             const bytes = this.#encoding!.getBytes(value);
@@ -337,7 +321,6 @@ export default class BinaryWriter {
      * @param value 要写入的 2 字节带符号整数。
      */
     public writeInt16(value: number): void;
-
     public writeInt16(...params: any): any {
         BinaryWriter.prototype.writeInt16 = overload([Number], function (this: BinaryWriter, value: number): void {
             this.#view!.setInt16(0, value, !this.#bigEndian);
@@ -352,7 +335,6 @@ export default class BinaryWriter {
      * @param value 要写入的 4 字节带符号整数。
      */
     public writeInt32(value: number): void;
-
     public writeInt32(...params: any): any {
         BinaryWriter.prototype.writeInt32 = overload([Number], function (this: BinaryWriter, value: number): void {
             this.#view!.setInt32(0, value, !this.#bigEndian);
@@ -367,13 +349,11 @@ export default class BinaryWriter {
      * @param value 要写入的 8 字节带符号整数。
      */
     public writeInt64(value: number): void;
-
     /**
      * 将 8 字节带符号整数写入当前流，并将流的位置提升 8 个字节。
      * @param value 要写入的 8 字节带符号整数。
      */
     public writeInt64(value: bigint): void;
-
     public writeInt64(...params: any): any {
         BinaryWriter.prototype.writeInt64 = overload([[Number, BigInt]], function (this: BinaryWriter, value: number | bigint): void {
             this.#view!.setBigInt64(0, BigInt(value), !this.#bigEndian);
@@ -389,7 +369,6 @@ export default class BinaryWriter {
      * @throws {RangeError} 如果值不在 -128 到 127 之间。
      */
     public writeSByte(value: number): void;
-
     public writeSByte(...params: any): any {
         BinaryWriter.prototype.writeSByte = overload([Number], function (this: BinaryWriter, value: number): void {
             if (value > 127) {
@@ -412,7 +391,6 @@ export default class BinaryWriter {
      * @param value 要写入的 2 字节无符号整数。
      */
     public writeUInt16(value: number): void;
-
     public writeUInt16(...params: any): any {
         BinaryWriter.prototype.writeUInt16 = overload([Number], function (this: BinaryWriter, value: number): void {
             this.#view!.setUint16(0, value, !this.#bigEndian);
@@ -427,7 +405,6 @@ export default class BinaryWriter {
      * @param value 要写入的 4 字节无符号整数。
      */
     public writeUInt32(value: number): void;
-
     public writeUInt32(...params: any): any {
         BinaryWriter.prototype.writeUInt32 = overload([Number], function (this: BinaryWriter, value: number): void {
             this.#view!.setUint32(0, value, !this.#bigEndian);
@@ -442,13 +419,11 @@ export default class BinaryWriter {
      * @param value 要写入的 8 字节无符号整数。
      */
     public writeUInt64(value: number): void;
-
     /**
      * 将 8 字节无符号整数写入当前流，并将流的位置提升 8 个字节。
      * @param value 要写入的 8 字节无符号整数。
      */
     public writeUInt64(value: bigint): void;
-
     public writeUInt64(...params: any): any {
         BinaryWriter.prototype.writeUInt64 = overload([[Number, BigInt]], function (this: BinaryWriter, value: number | bigint): void {
             this.#view!.setBigUint64(0, BigInt(value), !this.#bigEndian);
@@ -463,7 +438,6 @@ export default class BinaryWriter {
      * @param value 要写入的 32 位整数。
      */
     public write7BitEncodedInt(value: number): void;
-
     public write7BitEncodedInt(...params: any): any {
         BinaryWriter.prototype.write7BitEncodedInt = overload([Number], function (this: BinaryWriter, value: number): void {
             let v = +value;

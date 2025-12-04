@@ -1,5 +1,5 @@
 import overload from "@jyostudio/overload";
-import { checkSetterType } from "@jyostudio/overload/dist/decorator.js";
+import { checkSetterType } from "@jyostudio/overload/dist/decorator";
 import _Buffer from "./_buffer";
 import SeekOrigin from "./seek-origin";
 import Stream from "./stream";
@@ -172,26 +172,22 @@ export default class MemoryStream extends Stream {
      * 使用初始化为零的可扩展容量初始化 MemoryStream 类的新实例。
      */
     public constructor();
-
     /**
      * 使用按指定要求初始化的可扩展容量初始化 MemoryStream 类的新实例。
      * @param capacity 内部数组的初始大小（以字节为单位）。
      */
     public constructor(capacity: number);
-
     /**
      * 基于指定的字节数组初始化 MemoryStream 类的无法调整大小的新实例。
      * @param buffer 从中创建当前流的无符号字节数组。
      */
     public constructor(buffer: Uint8Array);
-
     /**
      * 在 MemoryStream.CanWrite 属性按指定设置的状态下，基于指定的字节数组初始化 MemoryStream 类的无法调整大小的新实例。
      * @param buffer 从中创建此流的无符号字节的数组。
      * @param writable MemoryStream.CanWrite 属性的设置，确定该流是否支持写入。
      */
     public constructor(buffer: Uint8Array, writable: boolean);
-
     /**
      * 基于字节数组的指定区域（索引）初始化 MemoryStream 类的无法调整大小的新实例。
      * @param buffer 从中创建此流的无符号字节的数组。
@@ -199,7 +195,6 @@ export default class MemoryStream extends Stream {
      * @param count 流的长度（以字节为单位）。
      */
     public constructor(buffer: Uint8Array, index: number, count: number);
-
     /**
      * 在 MemoryStream.CanWrite 属性按指定设置的状态下，基于字节数组的指定区域，初始化 MemoryStream 类的无法调整大小的新实例。
      * @param buffer 从中创建此流的无符号字节的数组。
@@ -213,7 +208,6 @@ export default class MemoryStream extends Stream {
         count: number,
         writable: boolean
     );
-
     /**
      * 在 MemoryStream.CanWrite 属性和调用 MemoryStream.GetBuffer 的能力按指定设置的状态下，基于字节数组的指定区域初始化 MemoryStream 类的新实例。
      * @param buffer 从中创建此流的无符号字节的数组。
@@ -229,17 +223,16 @@ export default class MemoryStream extends Stream {
         writable: boolean,
         publiclyVisible: boolean
     );
-
     public constructor(...params: any) {
         super();
 
-        return MemoryStream[CONSTRUCTOR_SYMBOL].apply(this, params);
+        MemoryStream[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): MemoryStream {
+    private static [CONSTRUCTOR_SYMBOL](...params: any): void {
         MemoryStream[CONSTRUCTOR_SYMBOL] = overload()
             .add([], function (this: MemoryStream) {
-                return MemoryStream[CONSTRUCTOR_SYMBOL].call(this, 0);
+                MemoryStream[CONSTRUCTOR_SYMBOL].call(this, 0);
             })
             .add([Number], function (this: MemoryStream, capacity: number) {
                 if (capacity < 0) {
@@ -255,7 +248,7 @@ export default class MemoryStream extends Stream {
                 this.#isOpen = true;
             })
             .add([Uint8Array], function (this: MemoryStream, buffer: Uint8Array) {
-                return MemoryStream[CONSTRUCTOR_SYMBOL].call(this, buffer, true);
+                MemoryStream[CONSTRUCTOR_SYMBOL].call(this, buffer, true);
             })
             .add([Uint8Array, Boolean], function (this: MemoryStream, buffer: Uint8Array, writable: boolean) {
                 this.#buffer = buffer;
@@ -267,10 +260,10 @@ export default class MemoryStream extends Stream {
                 this.#isOpen = true;
             })
             .add([Uint8Array, Number, Number], function (this: MemoryStream, buffer: Uint8Array, index: number, count: number) {
-                return MemoryStream[CONSTRUCTOR_SYMBOL].call(this, buffer, index, count, true, false);
+                MemoryStream[CONSTRUCTOR_SYMBOL].call(this, buffer, index, count, true, false);
             })
             .add([Uint8Array, Number, Number, Boolean], function (this: MemoryStream, buffer: Uint8Array, index: number, count: number, writable: boolean) {
-                return MemoryStream[CONSTRUCTOR_SYMBOL].call(this, buffer, index, count, writable, false);
+                MemoryStream[CONSTRUCTOR_SYMBOL].call(this, buffer, index, count, writable, false);
             })
             .add([Uint8Array, Number, Number, Boolean, Boolean], function (this: MemoryStream, buffer: Uint8Array, index: number, count: number, writable: boolean, publiclyVisible: boolean) {
                 if (index < 0) {
@@ -331,7 +324,7 @@ export default class MemoryStream extends Stream {
     /**
      * 释放与当前 MemoryStream 对象关联的所有资源。
      */
-    public override[Symbol.dispose]() {
+    public override [Symbol.dispose]() {
         this.#buffer = null;
         this.#capacity = 0;
         this.#exposable = false;
@@ -349,7 +342,6 @@ export default class MemoryStream extends Stream {
      * 关闭 MemoryStream 流。
      */
     public override close(): void;
-
     public override close(...params: any): any {
         MemoryStream.prototype.close = overload([], function (this: MemoryStream): void {
             this[Symbol.dispose]();
@@ -362,9 +354,8 @@ export default class MemoryStream extends Stream {
      * 清理当前编写器的所有缓冲区，使所有缓冲数据写入基础设备。
      */
     public override flush(): void;
-
     public override flush(...params: any): any {
-        MemoryStream.prototype.flush = overload([], function (this: MemoryStream): void {});
+        MemoryStream.prototype.flush = overload([], function (this: MemoryStream): void { });
         return MemoryStream.prototype.flush.apply(this, params);
     }
 
@@ -373,7 +364,6 @@ export default class MemoryStream extends Stream {
      * @returns 创建此流所用的字节数组；或者如果在当前实例的构造期间没有向 MemoryStream 构造函数提供字节数组，则为基础数组。
      */
     public getBuffer(): Uint8Array;
-
     public getBuffer(...params: any): any {
         MemoryStream.prototype.getBuffer = overload([], function (this: MemoryStream): Uint8Array {
             if (!this.#exposable) {
@@ -394,7 +384,6 @@ export default class MemoryStream extends Stream {
      * @returns 写入缓冲区中的总字节数。 如果字节数当前不可用，则总字节数可能小于所请求的字节数；如果在读取到任何字节前已到达流结尾，则为零。
      */
     public override read(buffer: Uint8Array, offset: number, count: number): number;
-
     public override read(...params: any): any {
         MemoryStream.prototype.read = overload([Uint8Array, Number, Number], function (this: MemoryStream, buffer: Uint8Array, offset: number, count: number): number {
             if (offset < 0) {
@@ -441,7 +430,6 @@ export default class MemoryStream extends Stream {
      * @returns 强制转换为 Int32 的字节；或者如果已到达流的末尾，则为 -1。
      */
     public override readByte(): number;
-
     public override readByte(...params: any): any {
         MemoryStream.prototype.readByte = overload([], function (this: MemoryStream): number {
             if (this.#position >= this.#length) return -1;
@@ -459,7 +447,6 @@ export default class MemoryStream extends Stream {
      * @returns 流内的新位置，通过将初始引用点和偏移量合并计算而得。
      */
     public override seek(offset: number, loc: SeekOrigin): number;
-
     public override seek(...params: any): any {
         MemoryStream.prototype.seek = overload([Number, SeekOrigin], function (this: MemoryStream, offset: number, loc: SeekOrigin): number {
             if (offset > MemoryStream.#MEM_STREAM_MAX_LENGTH) {
@@ -508,7 +495,6 @@ export default class MemoryStream extends Stream {
      * @returns {void}
      */
     public override setLength(value: number): void;
-
     public override setLength(...params: any): any {
         MemoryStream.prototype.setLength = overload([Number], function (this: MemoryStream, value: number): void {
             if (value < 0 || value > MemoryStream.#MEM_STREAM_MAX_LENGTH || value > (Number.MAX_SAFE_INTEGER - this.#origin)) {
@@ -537,7 +523,6 @@ export default class MemoryStream extends Stream {
      * @returns 新的字节数组。
      */
     public toArray(): number[];
-
     public toArray(...params: any): any {
         MemoryStream.prototype.toArray = overload([], function (this: MemoryStream): number[] {
             const copy = new Uint8Array(this.#length - this.#origin);
@@ -555,7 +540,6 @@ export default class MemoryStream extends Stream {
      * @param count 最多写入的字节数。
      */
     public override write(buffer: Uint8Array, offset: number, count: number): void;
-
     public override write(...params: any): any {
         MemoryStream.prototype.write = overload([Uint8Array, Number, Number], function (this: MemoryStream, buffer: Uint8Array, offset: number, count: number): void {
             if (!this.#writable) {
@@ -619,7 +603,6 @@ export default class MemoryStream extends Stream {
      * @returns {void}
      */
     public override writeByte(value: number): void;
-
     public override writeByte(...params: any): any {
         MemoryStream.prototype.writeByte = overload([Number], function (this: MemoryStream, value: number): void {
             if (!this.#writable) {
@@ -661,7 +644,6 @@ export default class MemoryStream extends Stream {
      * @returns {void}
      */
     public writeTo(stream: Stream): void;
-
     public writeTo(...params: any): any {
         MemoryStream.prototype.writeTo = overload([Stream], function (this: MemoryStream, stream: Stream): void {
             stream.write(this.#buffer as Uint8Array, this.#origin, this.#length - this.#origin);

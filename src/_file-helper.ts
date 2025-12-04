@@ -20,7 +20,6 @@ export default class _FileHelper {
      * @param relative 相对路径
      */
     public static resolveAbsolutePath(path: string, relative: string): string;
-
     public static resolveAbsolutePath(...params: any): any {
         _FileHelper.resolveAbsolutePath = overload([String, String], function (path: string, relative: string) {
             if (relative[0] === "/") return relative;
@@ -56,7 +55,6 @@ export default class _FileHelper {
      * @returns 文件内容
      */
     public static async(path: string): Promise<Uint8Array>;
-
     public static async(...params: any): any {
         _FileHelper.async = overload([String], async function (path: string): Promise<Uint8Array> {
             return new Uint8Array(await (await fetch(_FileHelper.#getRequestPath(path))).arrayBuffer());
@@ -71,7 +69,6 @@ export default class _FileHelper {
      * @returns 文件内容
      */
     public static sync(path: string): Uint8Array;
-
     public static sync(...params: any): any {
         _FileHelper.sync = overload([String], function (path: string): Uint8Array {
             let xhr = new XMLHttpRequest();

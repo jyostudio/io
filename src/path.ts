@@ -695,7 +695,6 @@ export default class Path {
      * @throws path 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static changeExtension(path: string | null, extension: string | null): string | null;
-
     public static changeExtension(...params: any): any {
         Path.changeExtension = overload([[String, null], [String, null]], function (path: string | null, extension: string | null): string | null {
             if (path !== null) {
@@ -737,7 +736,6 @@ export default class Path {
      * @throws path1 或 path2 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static combine(path1: string, path2: string): string;
-
     /**
      * 将三个字符串组合成一个路径。
      * @param path1 要组合的第一个路径。
@@ -747,7 +745,6 @@ export default class Path {
      * @throws path1、path2 或 path3 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static combine(path1: string, path2: string, path3: string): string;
-
     /**
      * 将四个字符串组合成一个路径。
      * @param path1 要组合的第一个路径。
@@ -758,15 +755,13 @@ export default class Path {
      * @throws path1、path2、path3 或 path4 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static combine(path1: string, path2: string, path3: string, path4: string): string;
-
     /**
      * 将字符串数组组合成一个路径。
      * @param paths 由路径的各部分构成的数组。
      * @returns 包含合并的路径的字符串。
      * @throws 数组中的一个字符串包含 Path.getInvalidPathChars() 中定义的一个或多个无效字符。
      */
-    public static combine(paths: string[] | List<string>): string;
-
+    public static combine(paths: string[] | List<String>): string;
     public static combine(...params: any): any {
         Path.combine = overload()
             .add([String, String], function (path1: string, path2: string): string {
@@ -790,7 +785,7 @@ export default class Path {
 
                 return Path.#combineNoChecks(Path.#combineNoChecks(Path.#combineNoChecks(path1, path2), path3), path4);
             })
-            .add([[Array, List.T(String)]], function (paths: string[] | List<string>): string {
+            .add([[Array, List.T(String)]], function (paths: string[] | List<String>): string {
                 const pathsArray = Array.isArray(paths) ? paths : paths.toArray();
 
                 for (let i = 0; i < pathsArray.length; i++) {
@@ -854,7 +849,6 @@ export default class Path {
      * @throws path 参数包含无效字符、为空、或仅包含空白。
      */
     public static getDirectoryName(path: string | null): string | null;
-
     public static getDirectoryName(...params: any): any {
         Path.getDirectoryName = overload([[String, null]], function (path: string | null): string | null {
             if (path !== null) {
@@ -884,7 +878,6 @@ export default class Path {
      * @throws path 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static getExtension(path: string | null): string | null;
-
     public static getExtension(...params: any): any {
         Path.getExtension = overload([[String, null]], function (path: string | null): string | null {
             if (path === null) return null;
@@ -919,7 +912,6 @@ export default class Path {
      * @throws path 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static getFileName(path: string | null): string | null;
-
     public static getFileName(...params: any): any {
         Path.getFileName = overload([[String, null]], function (path: string | null): string | null {
             if (path !== null) {
@@ -947,7 +939,6 @@ export default class Path {
      * @throws path 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static getFileNameWithoutExtension(path: string): string;
-
     public static getFileNameWithoutExtension(...params: any): any {
         Path.getFileNameWithoutExtension = overload([String], function (path: string): string {
             const fileName = Path.getFileName(path);
@@ -974,7 +965,6 @@ export default class Path {
      * @throws path 是一个零长度字符串，仅包含空白或者包含 Path.getInvalidPathChars() 中已定义一个或多个无效字符。- 或 -系统未能检索绝对路径。
      */
     public static getFullPath(path: string | null): string;
-
     public static getFullPath(...params: any): string {
         Path.getFullPath = overload([[String, null]], function (path: string | null): string {
             if (path === null || path.trim() === "") {
@@ -1020,7 +1010,6 @@ export default class Path {
      * @returns 包含不允许在文件名中使用的字符的数组。
      */
     public static getInvalidFileNameChars(): readonly string[];
-
     public static getInvalidFileNameChars(...params: any): any {
         Path.getInvalidFileNameChars = overload([], function (): readonly string[] {
             return Path.#invalidFileNameChars;
@@ -1034,7 +1023,6 @@ export default class Path {
      * @returns 包含不允许在路径名中使用的字符的数组。
      */
     public static getInvalidPathChars(): readonly string[];
-
     public static getInvalidPathChars(...params: any): any {
         Path.getInvalidPathChars = overload([], function (): readonly string[] {
             return Path.invalidPathChars;
@@ -1050,7 +1038,6 @@ export default class Path {
      * @throws path 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。- 或空白 String 被传递到 path。
      */
     public static getPathRoot(path: string | null): string;
-
     public static getPathRoot(...params: any): any {
         Path.getPathRoot = overload([[String, null]], function (path: string | null): string {
             if (path === null) return "";
@@ -1067,7 +1054,6 @@ export default class Path {
      * @returns 随机文件夹名或文件名。
      */
     public static getRandomFileName(): string;
-
     public static getRandomFileName(...params: any): any {
         Path.getRandomFileName = overload([], function (): string {
             let filename = "";
@@ -1091,7 +1077,6 @@ export default class Path {
      * @returns 临时文件的完整路径。
      */
     public static getTempFileName(): string;
-
     public static getTempFileName(...params: any): any {
         Path.getTempFileName = overload([], function (): string {
             const tempPath = Path.getTempPath();
@@ -1110,7 +1095,6 @@ export default class Path {
      * @returns 包含临时目录的路径信息的 String。
      */
     public static getTempPath(): string;
-
     public static getTempPath(...params: any): any {
         Path.getTempPath = overload([], function (): string {
             // 在Windows环境下应该返回 %TEMP% 或 %TMP%
@@ -1131,7 +1115,6 @@ export default class Path {
      * @throws path 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static hasExtension(path: string | null): boolean;
-
     public static hasExtension(...params: any): any {
         Path.hasExtension = overload([[String, null]], function (path: string | null): boolean {
             if (path === null) {
@@ -1166,7 +1149,6 @@ export default class Path {
      * @returns 路径的最大允许长度。
      */
     public static getMaxPathLength(): number;
-
     public static getMaxPathLength(...params: any): any {
         Path.getMaxPathLength = overload([], function (): number {
             return Path.#MAX_PATH;
@@ -1180,7 +1162,6 @@ export default class Path {
      * @returns 目录路径的最大允许长度。
      */
     public static getMaxDirectoryPathLength(): number;
-
     public static getMaxDirectoryPathLength(...params: any): any {
         Path.getMaxDirectoryPathLength = overload([], function (): number {
             return Path.#MAX_DIRECTORY_PATH;
@@ -1196,7 +1177,6 @@ export default class Path {
      * @throws path 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static hasWildCardCharacters(path: string | null): boolean;
-
     public static hasWildCardCharacters(...params: any): boolean {
         Path.hasWildCardCharacters = overload([[String, null]], function (path: string | null): boolean {
             if (path === null) {
@@ -1217,7 +1197,6 @@ export default class Path {
      * @throws path 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static isPathRooted(path: string | null): boolean;
-
     public static isPathRooted(...params: any): boolean {
         Path.isPathRooted = overload([[String, null]], function (path: string | null): boolean {
             if (path === null) {
@@ -1244,7 +1223,6 @@ export default class Path {
      * @throws path 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static isUncPath(path: string | null): boolean;
-
     public static isUncPath(...params: any): boolean {
         Path.isUncPath = overload([[String, null]], function (path: string | null): boolean {
             if (path === null) {
@@ -1265,7 +1243,6 @@ export default class Path {
      * @throws path 包含 Path.getInvalidPathChars() 中已定义的一个或多个无效字符。
      */
     public static isDevicePath(path: string | null): boolean;
-
     public static isDevicePath(...params: any): boolean {
         Path.isDevicePath = overload([[String, null]], function (path: string | null): boolean {
             if (path === null) {

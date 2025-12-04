@@ -1,6 +1,6 @@
 import overload from "@jyostudio/overload";
-import TextReader from "./text-reader";
 import { setDisposeStatus } from "./_utils";
+import TextReader from "./text-reader";
 
 const CONSTRUCTOR_SYMBOL = Symbol("constructor");
 
@@ -28,13 +28,13 @@ export default class StringReader extends TextReader {
      * @param s StringReader 应从其中进行初始化的字符串。
      */
     public constructor(s: string);
-
     public constructor(...params: any) {
         super();
-        return StringReader[CONSTRUCTOR_SYMBOL].apply(this, params);
+
+        StringReader[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): StringReader {
+    private static [CONSTRUCTOR_SYMBOL](...params: any): void {
         StringReader[CONSTRUCTOR_SYMBOL] = overload([String], function (this: StringReader, s: string) {
             this.#string = s;
             this.#length = s.length;
@@ -46,9 +46,8 @@ export default class StringReader extends TextReader {
     /**
      * 关闭 StringReader 并释放与该 StringReader 关联的所有系统资源。
      */
-    public close(): void;
-
-    public close(...params: any): any {
+    public override close(): void;
+    public override close(...params: any): any {
         StringReader.prototype.close = overload([], function (this: StringReader): void {
             StringReader.prototype[Symbol.dispose].apply(this);
         });
@@ -59,7 +58,7 @@ export default class StringReader extends TextReader {
     /**
      * 释放此字符串读取器使用的所有资源。
      */
-    public [Symbol.dispose](): void {
+    public override [Symbol.dispose](): void {
         this.#string = "";
         this.#position = 0;
         this.#length = 0;
@@ -71,9 +70,8 @@ export default class StringReader extends TextReader {
      * 读取下一个字符，而不更改读取器状态或字符源。返回下一个可用字符，而实际上并不从读取器中读取此字符。
      * @returns 一个表示下一个要读取的字符的整数；如果没有更多可读取的字符或该读取器不支持查找，则为 -1。
      */
-    public peek(): number;
-
-    public peek(...params: any): any {
+    public override peek(): number;
+    public override peek(...params: any): any {
         const superPeek = super.peek;
         StringReader.prototype.peek = overload([], function (this: StringReader): number {
             if (this.#position === this.#length) {
@@ -90,8 +88,7 @@ export default class StringReader extends TextReader {
      * 读取文本读取器中的下一个字符并使该字符的位置前移一个字符。
      * @returns 文本读取器中的下一个字符，或为 -1（如果没有更多可用字符）。
      */
-    public read(): number;
-
+    public override read(): number;
     /**
      * 从当前读取器中读取指定数目的字符并从指定索引开始将该数据写入缓冲区。
      * @param buffer 此方法返回时，包含指定的字符数组，该数组的 index 和 (index + count - 1) 之间的值由从当前源中读取的字符替换。
@@ -99,9 +96,8 @@ export default class StringReader extends TextReader {
      * @param count 要读取的最大字符数。如果在将指定数量的字符读入缓冲区之前就已达读取器的末尾，则返回该方法。
      * @returns 已读取的字符数。该数会小于或等于 count，具体取决于读取器中是否有可用的数据。如果调用此方法时没有留下更多的字符供读取，则此方法返回 0（零）。
      */
-    public read(buffer: string[], index: number, count: number): number;
-
-    public read(...params: any): any {
+    public override read(buffer: string[], index: number, count: number): number;
+    public override read(...params: any): any {
         const superRead = super.read;
         StringReader.prototype.read = overload()
             .add([], function (this: StringReader): number {
@@ -148,9 +144,8 @@ export default class StringReader extends TextReader {
      * 读取从当前位置到文本读取器末尾的所有字符并将它们作为一个字符串返回。
      * @returns 一个包含从当前位置到文本读取器末尾的所有字符的字符串。
      */
-    public readToEnd(): string;
-
-    public readToEnd(...params: any): any {
+    public override readToEnd(): string;
+    public override readToEnd(...params: any): any {
         const superReadToEnd = super.readToEnd;
         StringReader.prototype.readToEnd = overload([], function (this: StringReader): string {
             let result = "";
@@ -173,9 +168,8 @@ export default class StringReader extends TextReader {
      * 从文本读取器中读取一行字符并将数据作为字符串返回。
      * @returns 读取器中的下一行，或 null（如果已读取所有字符）。
      */
-    public readLine(): string | null;
-
-    public readLine(...params: any): any {
+    public override readLine(): string | null;
+    public override readLine(...params: any): any {
         const superReadLine = super.readLine;
         StringReader.prototype.readLine = overload([], function (this: StringReader): string | null {
             const str = this.#string;

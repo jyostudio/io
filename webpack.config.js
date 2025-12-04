@@ -2,6 +2,7 @@
 import path from "path";
 // 引入clean插件
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -9,7 +10,19 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // webpack中的所有配置信息，都应该写在这里
 export default {
     // 指定入口文件
-    entry: "./src/index.ts",
+    entry: {
+        index: "./src/index.ts",
+        "binary-reader": "./src/binary-reader.ts",
+        "binary-writer": "./src/binary-writer.ts",
+        "memory-stream": "./src/memory-stream.ts",
+        path: "./src/path.ts",
+        "seek-origin": "./src/seek-origin.ts",
+        stream: "./src/stream.ts",
+        "string-reader": "./src/string-reader.ts",
+        "string-writer": "./src/string-writer.ts",
+        "text-reader": "./src/text-reader.ts",
+        "text-writer": "./src/text-writer.ts"
+    },
     // 设置打包模式
     mode: "production",
     // 指定打包文件所在目录
@@ -17,7 +30,7 @@ export default {
         // 指定打包文件的目录
         path: path.resolve(__dirname, "dist"),
         // 打包后文件的文件名
-        filename: "index.js",
+        filename: "[name].js",
         // 告诉webpack不适用箭头
         environment: {
             arrowFunction: false
@@ -76,7 +89,8 @@ export default {
                 test: /\.tsx?$/,
                 loader: "ts-loader",
                 options: {
-                    allowTsInNodeModules: true
+                    allowTsInNodeModules: true,
+                    transpileOnly: true
                 }
             }
         ]
@@ -85,6 +99,14 @@ export default {
     plugins: [
         new CleanWebpackPlugin()
     ],
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+            }),
+        ],
+    },
     // 用来设置那些后缀名可以设置引用模块
     resolve: {
         extensions: [".ts", ".js"]

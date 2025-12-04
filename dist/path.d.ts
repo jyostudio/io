@@ -65,7 +65,7 @@ export default class Path {
      * @returns 包含合并的路径的字符串。
      * @throws 数组中的一个字符串包含 Path.getInvalidPathChars() 中定义的一个或多个无效字符。
      */
-    static combine(paths: string[] | List<string>): string;
+    static combine(paths: string[] | List<String>): string;
     /**
      * 返回指定路径字符串的目录信息。
      * @param path 文件或目录的路径。

@@ -9,6 +9,8 @@
         "target": "esnext",
         // 指定要使用的模块化规范
         "module": "esnext",
+        // 指定编译时，源文件所在的目录
+        "rootDir": "./src",
         // 用来指定编译后文件所在的目录,编译后的文件放在哪
         "outDir": "./dist",
         // 模块解析策略，"node"代表使用Node.js的模块解析策略
@@ -37,5 +39,6 @@
         "noImplicitThis": true,
         // 严格的检查空值  例：div不存在，在获取dom的时候
         "strictNullChecks": true,
+        "skipLibCheck": true
     }
 }

@@ -39,7 +39,43 @@ export default class StringWriter extends TextWriter {
      * @returns 包含到此为止写入当前 StringWriter 的字符的字符串。
      */
     toString(): string;
-    write(...params: any): any;
+    /**
+     * 将字符串或字符数组写入当前 StringWriter。
+     * @param value 要写入的字符串。
+     */
+    write(buffer: Uint8Array): void;
+    /**
+     * 将字符串数组写入当前 StringWriter。
+     * @param buffer 要写入的字符数组。
+     */
+    write(buffer: Array<string>): void;
+    /**
+     * 将字符串或字符数组写入当前 StringWriter。
+     * @param value 要写入的字符串。
+     */
+    write(value: string): void;
+    /**
+     * 将字符数组的一部分写入当前 StringWriter。
+     * @param buffer 包含要写入的字符的字符数组。
+     * @param index 要开始写入的缓冲区中的起始索引。
+     * @param count 要写入的字符数。
+     */
+    write(buffer: Array<string>, index: number, count: number): void;
+    /**
+     * 将布尔值写入当前 StringWriter。
+     * @param value 要写入的布尔值。
+     */
+    write(value: boolean): void;
+    /**
+     * 将数字写入当前 StringWriter。
+     * @param value 要写入的数字。
+     */
+    write(value: number): void;
+    /**
+     * 将对象写入当前 StringWriter。
+     * @param value 要写入的对象。
+     */
+    write(value: object): void;
 }
 export {};
 //# sourceMappingURL=string-writer.d.ts.map

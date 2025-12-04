@@ -24,17 +24,17 @@ export default abstract class TextReader {
      * 基于所指定的构造参数，初始化 TextReader 类的新实例。
      */
     public constructor();
-
     public constructor(...params: any) {
         if (new.target === TextReader) {
             throw new EvalError("无法创建抽象类“TextReader”的实例。");
         }
 
-        return TextReader[CONSTRUCTOR_SYMBOL].apply(this, params);
+        TextReader[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): TextReader {
+    private static [CONSTRUCTOR_SYMBOL](...params: any): void {
         TextReader[CONSTRUCTOR_SYMBOL] = overload([], function (this: TextReader) { });
+
         return TextReader[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
@@ -42,7 +42,6 @@ export default abstract class TextReader {
      * 关闭 TextReader 并释放与该 TextReader 关联的所有系统资源。
      */
     public close(): void;
-
     public close(...params: any): any {
         TextReader.prototype.close = overload([], function (this: TextReader): void {
             TextReader.prototype[Symbol.dispose].apply(this);
@@ -63,7 +62,6 @@ export default abstract class TextReader {
      * @returns 一个表示下一个要读取的字符的整数；如果没有更多可读取的字符或该读取器不支持查找，则为 -1。
      */
     public peek(): number;
-
     public peek(...params: any): any {
         TextReader.prototype.peek = overload([], function (this: TextReader): number {
             return -1;
@@ -77,7 +75,6 @@ export default abstract class TextReader {
      * @returns 文本读取器中的下一个字符，或为 -1（如果没有更多可用字符）。
      */
     public read(): number;
-
     /**
      * 从当前读取器中读取指定数目的字符并从指定索引开始将该数据写入缓冲区。
      * @param buffer 此方法返回时，包含指定的字符数组，该数组的 index 和 (index + count - 1) 之间的值由从当前源中读取的字符替换。
@@ -86,7 +83,6 @@ export default abstract class TextReader {
      * @returns 已读取的字符数。该数会小于或等于 count，具体取决于读取器中是否有可用的数据。如果调用此方法时没有留下更多的字符供读取，则此方法返回 0（零）。
      */
     public read(buffer: string[], index: number, count: number): number;
-
     public read(...params: any): any {
         TextReader.prototype.read = overload()
             .add([], function (this: TextReader): number {
@@ -125,7 +121,6 @@ export default abstract class TextReader {
      * @returns 一个包含从当前位置到文本读取器末尾的所有字符的字符串。
      */
     public readToEnd(): string;
-
     public readToEnd(...params: any): any {
         TextReader.prototype.readToEnd = overload([], function (this: TextReader): string {
             let sb: string[] = [];
@@ -149,7 +144,6 @@ export default abstract class TextReader {
      * @returns 已读取的字符数。该数字将小于或等于 count，取决于是否所有的输入字符都已读取。
      */
     public readBlock(buffer: string[], index: number, count: number): number;
-
     public readBlock(...params: any): any {
         TextReader.prototype.readBlock = overload([Array, Number, Number], function (this: TextReader, buffer: string[], index: number, count: number): number {
             let i = 0;
@@ -169,7 +163,6 @@ export default abstract class TextReader {
      * @returns 读取器中的下一行，或 null（如果已读取所有字符）。
      */
     public readLine(): string | null;
-
     public readLine(...params: any): any {
         TextReader.prototype.readLine = overload([], function (this: TextReader): string | null {
             let sb: string[] = [];
@@ -209,7 +202,6 @@ class NullTextReader extends TextReader {
      * 关闭 NullTextReader 并释放与该读取器关联的所有系统资源。
      */
     public close(): void;
-
     public close(...params: any): any {
         const superClose = super.close;
         NullTextReader.prototype.close = overload([], function (this: NullTextReader): void {
@@ -224,7 +216,6 @@ class NullTextReader extends TextReader {
      * @returns 文本读取器中的下一个字符，或为 -1（如果没有更多可用字符）。
      */
     public read(): number;
-
     /**
      * 从当前读取器中读取指定数目的字符并从指定索引开始将该数据写入缓冲区。
      * @param buffer 此方法返回时，包含指定的字符数组，该数组的 index 和 (index + count - 1) 之间的值由从当前源中读取的字符替换。
@@ -233,7 +224,6 @@ class NullTextReader extends TextReader {
      * @returns 已读取的字符数。
      */
     public read(buffer: string[], index: number, count: number): number;
-
     public read(...params: any): any {
         NullTextReader.prototype.read = overload()
             .add([], function (this: NullTextReader): number {
@@ -251,7 +241,6 @@ class NullTextReader extends TextReader {
      * @returns 空字符串。
      */
     public readLine(): string | null;
-
     public readLine(...params: any): any {
         NullTextReader.prototype.readLine = overload([], function (this: NullTextReader): string {
             return "";

@@ -11,9 +11,8 @@ export default class _Buffer {
      * @throws {RangeError} 如果 srcOffset、dstOffset 或 count 小于 0，或者源数组和目标数组重叠。
      */
     static blockCopy(src: Uint8Array | Array<number>, srcOffset: number, dst: Uint8Array | Array<number>, dstOffset: number, count: number): void;
-
     static blockCopy(...params: any): any {
-        _Buffer.blockCopy = overload([[Uint8Array, Array], Number, [Uint8Array, Array], Number, Number], function (src: Uint8Array, srcOffset: number, dst: Uint8Array, dstOffset: number, count: number): void {
+        _Buffer.blockCopy = overload([[Uint8Array, Array<number>], Number, [Uint8Array, Array<number>], Number, Number], function (src: Uint8Array | Array<number>, srcOffset: number, dst: Uint8Array | Array<number>, dstOffset: number, count: number): void {
             if (srcOffset < 0) {
                 throw new RangeError(`"srcOffset"必须为非负数。`);
             }

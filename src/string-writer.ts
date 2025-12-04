@@ -31,22 +31,21 @@ export default class StringWriter extends TextWriter {
      * 初始化 StringWriter 类的新实例，使用默认的 StringBuilder。
      */
     public constructor();
-
     /**
      * 使用指定的 StringBuilder 初始化 StringWriter 类的新实例。
      * @param sb 要写入的 StringBuilder。
      */
     public constructor(sb: StringBuilder);
-
     public constructor(...params: any) {
         super();
-        return StringWriter[CONSTRUCTOR_SYMBOL].apply(this, params);
+
+        StringWriter[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): StringWriter {
+    private static [CONSTRUCTOR_SYMBOL](...params: any): void {
         StringWriter[CONSTRUCTOR_SYMBOL] = overload()
             .add([], function (this: StringWriter) {
-                return StringWriter[CONSTRUCTOR_SYMBOL].call(this, new StringBuilder());
+                StringWriter[CONSTRUCTOR_SYMBOL].call(this, new StringBuilder());
             })
             .add([StringBuilder], function (this: StringWriter, sb: StringBuilder) {
                 this.#stringBuilder = sb;
@@ -59,9 +58,8 @@ export default class StringWriter extends TextWriter {
     /**
      * 关闭当前 StringWriter 并释放任何与该 StringWriter 关联的系统资源。
      */
-    public close(): void;
-
-    public close(...params: any): any {
+    public override close(): void;
+    public override close(...params: any): any {
         StringWriter.prototype.close = overload([], function (this: StringWriter): void {
             StringWriter.prototype[Symbol.dispose].apply(this);
         });
@@ -72,7 +70,7 @@ export default class StringWriter extends TextWriter {
     /**
      * 释放此字符串写入器使用的所有资源。
      */
-    public [Symbol.dispose](): void {
+    public override [Symbol.dispose](): void {
         this.#encoding = null;
         this.#stringBuilder = null;
 
@@ -84,7 +82,6 @@ export default class StringWriter extends TextWriter {
      * @returns 基础 StringBuilder。
      */
     public getStringBuilder(): StringBuilder;
-
     public getStringBuilder(...params: any): any {
         StringWriter.prototype.getStringBuilder = overload([], function (this: StringWriter): StringBuilder {
             return this.#stringBuilder!;
@@ -97,9 +94,8 @@ export default class StringWriter extends TextWriter {
      * 返回包含到此为止写入当前 StringWriter 的字符的字符串。
      * @returns 包含到此为止写入当前 StringWriter 的字符的字符串。
      */
-    public toString(): string;
-
-    public toString(...params: any): any {
+    public override toString(): string;
+    public override toString(...params: any): any {
         StringWriter.prototype.toString = overload([], function (this: StringWriter): string {
             return this.#stringBuilder!.toString();
         });
@@ -107,7 +103,44 @@ export default class StringWriter extends TextWriter {
         return StringWriter.prototype.toString.apply(this, params);
     }
 
-    public write(...params: any): any {
+    /**
+     * 将字符串或字符数组写入当前 StringWriter。
+     * @param value 要写入的字符串。
+     */
+    public override write(buffer: Uint8Array): void;
+    /**
+     * 将字符串数组写入当前 StringWriter。
+     * @param buffer 要写入的字符数组。
+     */
+    public override write(buffer: Array<string>): void;
+    /**
+     * 将字符串或字符数组写入当前 StringWriter。
+     * @param value 要写入的字符串。
+     */
+    public override write(value: string): void;
+    /**
+     * 将字符数组的一部分写入当前 StringWriter。
+     * @param buffer 包含要写入的字符的字符数组。
+     * @param index 要开始写入的缓冲区中的起始索引。
+     * @param count 要写入的字符数。
+     */
+    public override write(buffer: Array<string>, index: number, count: number): void;
+    /**
+     * 将布尔值写入当前 StringWriter。
+     * @param value 要写入的布尔值。
+     */
+    public override write(value: boolean): void;
+    /**
+     * 将数字写入当前 StringWriter。
+     * @param value 要写入的数字。
+     */
+    public override write(value: number): void;
+    /**
+     * 将对象写入当前 StringWriter。
+     * @param value 要写入的对象。
+     */
+    public override write(value: object): void;
+    public override write(...params: any): any {
         StringWriter.prototype.write = overload()
             .add([String], function (this: StringWriter, value: string): void {
                 this.#stringBuilder!.append(value);
