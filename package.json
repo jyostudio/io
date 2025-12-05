@@ -1,6 +1,6 @@
 {
   "name": "@jyostudio/io",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "io",
   "source": "src/index.ts",
   "main": "src/index.ts",
@@ -48,8 +48,8 @@
     "webpack": "^5.103.0",
     "webpack-cli": "^6.0.1",
     "@jyostudio/enum": "^0.1.4",
-    "@jyostudio/list": "^0.1.12",
+    "@jyostudio/list": "^0.1.13",
     "@jyostudio/overload": "^0.1.12",
-    "@jyostudio/text": "^0.1.8"
+    "@jyostudio/text": "^0.1.9"
   }
 }
